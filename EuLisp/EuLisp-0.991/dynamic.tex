@@ -1,0 +1,142 @@
+\defModule{dynamic}{Dynamic Binding}
+%
+\begin{optDefinition}
+%
+The name of this module is {\tt dynamic}.
+%
+\specop{dynamic}
+%
+\Syntax
+\defSyntax{dynamic}{
+\begin{syntax}
+    \scdef{dynamic-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{dynamic} \scref{identifier} )
+\end{syntax}}%
+\showSyntaxBox{dynamic}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming a dynamic binding.
+\end{arguments}
+%
+\result%
+The value of closest dynamic binding of \scref{identifier} is returned.  If no
+visible binding exists, an error is signaled (condition:
+\conditionref{unbound-dynamic-variable}
+\indexcondition{unbound-dynamic-variable}).
+
+\specop{dynamic-setq}
+%
+\Syntax
+\defSyntax{dynamic-setq}{
+\begin{syntax}
+    \scdef{dynamic-setq-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{dynamic-setq} \scref{identifier} \scref{form} )
+\end{syntax}}%
+\showSyntaxBox{dynamic-setq}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming a dynamic binding to be updated.
+
+    \item[form] An expression whose value will be stored in the dynamic binding
+    of \scref{identifier}.
+\end{arguments}
+%
+\result%
+The value of \scref{form}.
+%
+\remarks%
+The \scref{form} is evaluated and the result is stored in the closest dynamic
+binding of \scref{identifier}.  If no visible binding exists, an error is
+signalled (condition: \conditionref{unbound-dynamic-variable}
+\indexcondition{unbound-dynamic-variable}).
+
+\condition{unbound-dynamic-variable}{general-condition}
+%
+\begin{initoptions}
+    \item[symbol, symbol] A symbol naming the (unbound) dynamic variable.
+\end{initoptions}
+%
+\remarks%
+Signalled by \specopref{dynamic} or \specopref{dynamic-setq} if the given
+dynamic variable has no visible dynamic binding.
+
+\specop{dynamic-let}
+%
+\Syntax
+\defSyntax{dynamic-let}{
+\begin{syntax}
+    \scdef{dynamic-let-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{dynamic-let} \scseqref{binding} \\
+    \>\>  \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{dynamic-let}
+%
+\begin{arguments}
+    \item[binding\/$^*$] A list of binding specifiers.
+
+    \item[body] A sequence of forms.
+\end{arguments}
+%
+\result%
+The sequence of \scref{form}s is evaluated in order, returning the value of the
+last one as the result of the \specopref{dynamic-let} form.
+%
+\remarks%
+A binding specifier is either an identifier or a two element list of an
+identifier and an initializing form.  All the initializing forms are evaluated
+from left to right in the current environment and the new bindings for the
+symbols named by the identifiers are created in the dynamic environment to hold
+the results.  These bindings have dynamic scope and dynamic extent
+\index{general}{scope and extent!of \specopref{dynamic-let} bindings}.  Each
+form in \scref{body} is evaluated in order in the environment extended by the
+above bindings.  The result of evaluating the last form in \scref{body} is
+returned as the result of \specopref{dynamic-let}.
+
+\defop{defglobal}
+%
+\Syntax
+\defSyntax{defglobal}{
+\begin{syntax}
+    \scdef{defglobal-form}: \ra{} \classref{object} \\
+    \> ( \defopref{defglobal} \scref{identifier} \scref{level-1-form} )
+\end{syntax}}%
+\showSyntaxBox{defglobal}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming a top dynamic binding containing the value
+    of \scref{form}.
+
+    \item[form] The \scref{form} whose value will be stored in the top dynamic
+    binding of \scref{identifier}.
+\end{arguments}
+%
+\remarks%
+The value of \scref{form} is stored as the top dynamic value of the symbol named
+by \scref{identifier} \index{general}{binding!top dynamic}.  The binding created
+by \defopref{defglobal} is mutable.  An error is signaled (condition:
+\conditionref{dynamic-multiply-defined}
+\indexcondition{dynamic-multiply-defined}), on processing this form more than
+once for the same \scref{identifier}.
+%
+\begin{note}
+    The problems engendered by cross-module reference necessitated by a single
+    top-dynamic environment are leading to a reconsideration of the defined
+    model.  Another unpleasant aspect of the current model is that it is not
+    clear how to address the issue of importing (or hiding) dynamic
+    variables---they are in every sense global, which conflicts with the
+    principle of module abstraction.  A model, in which a separate top-dynamic
+    environment is associated with each module is under consideration for a
+    later version of the definition.
+\end{note}
+
+\condition{dynamic-multiply-defined}{general-condition}
+%
+\begin{initoptions}
+    \item[symbol, symbol] A symbol naming the dynamic variable which has already
+    been defined.
+\end{initoptions}
+%
+\remarks%
+Signalled by \defopref{defglobal} if the named dynamic variable already
+exists.
+\end{optDefinition}

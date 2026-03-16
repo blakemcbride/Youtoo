@@ -1,0 +1,228 @@
+\defModule{character}{Characters}
+%
+\begin{optDefinition}
+%
+The defined name of this module is {\tt character}.
+
+\syntaxform{character}
+%
+Character literals\index{general}{literal!character} are denoted by the {\em
+    extension\/} glyph, called {\em hash} (\verb+#+), followed by the {\em
+    character-extension\/}\index{general}{character!character-extension glyph}
+glyph, called {\em reverse solidus\/} (\verb+\+), followed by the name of the
+character.  The syntax for the external representation of characters is defined
+in syntax table~\ref{character-syntax}.  For most characters, their name is the
+same as the glyph associated with the character, for example: the character
+``a'' has the name ``a'' and has the external representation \verb+#\a+.
+Certain characters in the group named {\em special\/} (see
+table~\ref{character-set} and also syntax table~\ref{character-syntax}) form the
+syntax category \scref{special-character-token} and are referred to using the
+digrams defined in table~\ref{character-digrams}.
+%
+\begin{table}[h]
+\label{character-digrams}
+\caption{Character digrams}%
+\begin{center}
+\begin{tabular}{|ll|}\hline
+    Operation & Digram \\
+    \hline
+    alert & \verb+\a+ \\
+    backspace & \verb+\b+ \\
+    delete & \verb+\d+ \\
+    formfeed & \verb+\f+ \\
+    linefeed & \verb+\l+ \\
+    newline & \verb+\n+ \\
+    return & \verb+\r+ \\
+    tab & \verb+\t+ \\
+    vertical tab & \verb+\v+ \\
+    hex-insertion & \verb+\x+ \\
+    string delimiter & \verb+\"+ \\
+    string escape & \verb+\\+ \\
+    \hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+Any character which does not have an external representation dealt with by cases
+described so far is represented by the digram \verb+#\x+ (see
+table~\ref{character-digrams}) followed four hexadecimal digits.  The value of
+the hexadecimal number represents the position of the character in the current
+character set.  Examples of such character literals are \verb+#\x0000+ and
+\verb+#\xabcd+, which denote, respectively, the characters at position 0 and at
+position 43981 in the character set current at the time of reading or writing.
+The syntax for the external representation of characters is defined in syntax
+table~\ref{character-syntax} below:
+%
+\Syntax
+\label{character-syntax}
+\defSyntax{character}{
+\begin{syntax}
+    \scdef{character}: \\
+    \>  \scref{literal-character-token} \\
+    \>  \scref{special-character-token} \\
+    \>  \scref{numeric-character-token} \\
+    \scdef{literal-character-token}: \\
+    \>  \#\textbackslash{}\scref{letter} \\
+    \>  \#\textbackslash{}\scref{decimal-digit} \\
+    \>  \#\textbackslash{}\scref{other-character} \\
+    \>  \#\textbackslash{}\scref{special-character} \\
+    \scdef{special-character-token}: \\
+    \>  \#\textbackslash{}\textbackslash{}a \\
+    \>  \#\textbackslash{}\textbackslash{}b \\
+    \>  \#\textbackslash{}\textbackslash{}d \\
+    \>  \#\textbackslash{}\textbackslash{}f \\
+    \>  \#\textbackslash{}\textbackslash{}l \\
+    \>  \#\textbackslash{}\textbackslash{}n \\
+    \>  \#\textbackslash{}\textbackslash{}r \\
+    \>  \#\textbackslash{}\textbackslash{}t \\
+    \>  \#\textbackslash{}\textbackslash{}v \\
+    \>  \#\textbackslash{}\textbackslash{}" \\
+    \>  \#\textbackslash{}\textbackslash{}\textbackslash{} \\
+    \scdef{numeric-character-token}: \\
+    \>  \#\textbackslash{}\textbackslash{}x
+        \scref{hexadecimal-digit} \scref{hexadecimal-digit} \\
+    \>\>  \scref{hexadecimal-digit} \scref{hexadecimal-digit}
+\end{syntax}}%
+\showSyntaxBox{character}
+
+%
+\begin{note}
+    This text refers to the ``current character set'' but defines no means of
+    selecting alternative character sets.  This is to allow for future
+    extensions and implementation-defined extensions which support more than one
+    character set.
+\end{note}
+
+\derivedclass{character}{object}
+%
+The class of all characters.
+
+\function{character?}
+%
+\begin{arguments}
+    \item[{object}] Object to examine.
+\end{arguments}
+%
+\result%
+Returns {\em object\/} if it is a character, otherwise \nil{}.
+
+\method{binary=}{character}
+%
+\begin{specargs}
+    \item[character$_1$, \classref{character}] A character.
+    \item[character$_2$, \classref{character}] A character.
+\end{specargs}
+%
+\result%
+If {\em character$_1$\/} is the same character as {\em character$_2$\/} the
+result is {\em character$_1$}, otherwise the result is \nil{}.
+
+\method{binary<}{character}
+%
+\begin{specargs}
+    \item[character$_1$, \classref{character}] A character.
+    \item[character$_2$, \classref{character}] A character.
+\end{specargs}
+%
+\result%
+If both characters denote uppercase alphabetic or both denote lowercase
+alphabetic, the result is defined by alphabetical order.  If both characters
+denote a digit, the result is defined by numerical order.  In these three cases,
+if the comparison is \true{}, the result is {\em character$_1$}, otherwise it is
+\nil{}.  Any other comparison is an error and the result of such comparisons is
+undefined.
+%
+\examples
+\begin{tabular}{lcl}
+    \verb+(binary< #\A #\Z)+ & \Ra & \verb+#\A+\\
+    \verb+(binary< #\a #\z)+ & \Ra & \verb+#\a+\\
+    \verb+(binary< #\0 #\9)+ & \Ra & \verb+#\0+\\
+    \verb+(binary< #\A #\a)+ & \Ra & {\em undefined}\\
+    \verb+(binary< #\A #\0)+ & \Ra & {\em undefined}\\
+    \verb+(binary< #\a #\0)+ & \Ra & {\em undefined}\\
+\end{tabular}
+%
+\seealso%
+Method \methodref{binary<}{string} for \class{string}.
+
+\generic{as-lowercase}
+%
+\begin{genericargs}
+    \item[object, \classref{object}] An object to convert to lower case.
+\end{genericargs}
+%
+\result%
+An instance of the same class as {\em object\/} converted to lower case
+according to the actions of the appropriate method for the class of {\em
+    object}.
+%
+\seealso%
+Another method \methodref{as-lowercase}{string} for \classref{string}.
+
+\method{as-lowercase}{character}
+%
+\begin{specargs}
+    \item[character, \classref{character}] A character.
+\end{specargs}
+%
+\result%
+If {\em character\/} denotes an upper case character, a character denoting its
+lower case counterpart is returned.  Otherwise the result is the argument.
+
+\generic{as-uppercase}
+%
+\begin{genericargs}
+    \item[object, \classref{object}] An object to convert to upper case.
+\end{genericargs}
+%
+\result%
+An instance of the same class as {\em object\/} converted to upper case
+according to the actions of the appropriate method for the class of {\em
+    object}.
+%
+\seealso%
+Another method is defined on \methodref{as-uppercase}{string} for
+\classref{string}.
+
+\method{as-uppercase}{character}
+%
+\begin{specargs}
+    \item[character, \classref{character}] A character.
+\end{specargs}
+%
+\result%
+If {\em character\/} denotes an lower case character, a character denoting its
+upper case counterpart is returned.  Otherwise the result is the argument.
+
+\method{generic-print}{character}
+%
+\begin{specargs}
+    \item[character, \classref{character}] Character to be ouptut on {\em
+        stream}.
+    \item[stream, \classref{stream}] Stream on which {\em character\/} is to be
+    ouptut.
+\end{specargs}
+%
+\result%
+The character {\em character}.
+%
+\remarks%
+Output the interpretation of {\em character\/} on {\em stream}.
+
+\method{generic-write}{character}
+%
+\begin{specargs}
+    \item[character, \classref{character}] Character to be ouptut on {\em
+        stream}.
+    \item[stream, \classref{stream}] Stream on which {\em character\/} is to be
+    ouptut.
+\end{specargs}
+%
+\result%
+The character {\em character}.
+%
+\remarks%
+Output external representation of {\em character\/} on {\em stream\/} in the
+format \verb+#\+{\em{}name\/} as described at the beginning of this section.
+%
+\end{optDefinition}

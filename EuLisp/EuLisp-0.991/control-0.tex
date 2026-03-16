@@ -1,0 +1,1422 @@
+\clause{Level-0 Defining, Special and Function-call Forms}
+%
+\label{control-0}
+\index{general}{level-0}
+%
+\begin{optDefinition}
+\noindent
+This section gives the syntax of well-formed expressions and describes the
+semantics of the special-forms, functions and syntax forms of the level-0
+language.  In the case of level-0 syntax forms, the description includes a
+set of expansion rules.  However, these descriptions are not prescriptive of any
+processor and a conforming program cannot rely on adherence to these expansions.
+\end{optDefinition}
+
+\sclause{Simple Expressions}
+%
+\begin{optPrivate}
+    What happens with vectors, instances etc.  They can be printed out, so why
+    can't they be constants too.
+
+    HED wants ids as well as ids and initializers for \specopref{let}.
+\end{optPrivate}
+%
+\begin{optDefinition}
+\noindent
+%
+\syntaxform{constant}
+\ttindex{constant}
+\noindent
+There are two kinds of constants\index{general}{constant!literal}, literal
+constants and defined constants\index{general}{constant!defined}.  Only the
+first kind are considered here.  A literal constant is a number, a string, a
+character, or the empty list.  The result of processing such a literal constant
+is the constant itself---that is, it denotes
+itself\index{general}{processing!constants}.
+%
+\examples
+\begin{tabular}{ll}
+    \verb+()+ & the empty list\\
+    \verb+123+ & a fixed precision integer\\
+    \verb+#\a+ & a character\\
+    \verb+"abc"+ & a string
+\end{tabular}
+
+\defop{defconstant}
+%
+\Syntax
+\defSyntax{defconstant}{
+\begin{syntax}
+    \scdef{defconstant-form}: \ra{} \classref{object} \\
+    \>  ( \defopref{defconstant} \scref{constant-name} \scref{form} ) \\
+    \scdef{constant-name}: \\
+    \>  \scref{identifier}
+\end{syntax}}%
+\showSyntaxBox{defconstant}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming an immutable top-lexical binding to be
+    initialized with the value of \scref{form}.
+
+    \item[form] The \scref{form} whose value will be stored in the binding of
+    \scref{identifier}.
+\end{arguments}
+%
+\remarks%
+The value of \scref{form} is stored in the top-lexical binding of
+\scref{identifier}.  It is a violation to attempt to modify the binding of a
+defined constant.
+
+\constant{t}{symbol}
+%
+\remarks%
+This may be used to denote the abstract boolean value \sc{true}, but so may any
+other value than \nil{}.
+
+\syntaxform{symbol}
+\ttindex{symbol}
+\noindent
+The current lexical binding of \syntaxref{symbol} is
+returned\index{general}{processing!symbols}.  A symbol can also name a defined
+constant---that is, an immutable top-lexical binding.
+
+\defop{deflocal}
+%
+\Syntax
+\defSyntax{deflocal}{
+\begin{syntax}
+    \scdef{deflocal-form}: \ra{} \classref{object} \\
+    \>  ( \defopref{deflocal} \scref{local-name} \scref{form} ) \\
+    \scdef{local-name}: \\
+    \>  \scref{identifier}
+\end{syntax}}%
+\showSyntaxBox{deflocal}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming a binding containing the value of
+    \scref{form}.
+
+    \item[form] The \scref{form} whose value will be stored in the binding of
+    \scref{identifier}.
+\end{arguments}
+%
+\remarks%
+The value of \scref{form} is stored in the top-lexical binding of
+\scref{identifier}.  The binding created by a \defopref{deflocal} form is
+mutable.
+%
+\seealso%
+\specopref{setq}.
+
+\specop{quote}
+\index{general}{literal}
+%
+\Syntax
+\defSyntax{quote}{
+\begin{syntax}
+    \scdef{quote-form}: \ra{} \scref{object} \\
+    \>  ( \specopref{quote} \scref{object} ) \\
+    \>  \syntaxref{'}\scref{object}
+\end{syntax}}%
+\showSyntaxBox{quote}
+%
+\begin{arguments}
+    \item[object] the \scref{object} to be quoted.
+\end{arguments}
+%
+\result%
+The result is \scref{object}.
+%
+\remarks%
+The result of processing the expression {\tt (\specopref{quote} \scref{object})}
+is \scref{object}.  The \scref{object} can be any object having an external
+representation \index{general}{external representation (see also
+    \functionref{prin} and \functionref{write})}.  The special form
+\specopref{quote} can be abbreviated using {\em apostrophe} --- graphic
+representation~\verb+'+\ttsubindex{quote}{abbreviation with \syntaxref{'}} ---
+so that {\tt (\specopref{quote} a)} can be written {\tt \syntaxref{'}a}.  These
+two notations are used to incorporate literal constants
+\index{general}{literal!quotation} in programs.  It is an error to modify a
+literal expression \index{general}{literal!modification of}.
+
+\syntaxform{'}
+%
+\remarks%
+See \specopref{quote}.
+
+\end{optDefinition}
+
+\sclause{Functions: creation, definition and application}
+\label{function}
+%
+\begin{optPrivate}
+    Need more detail about \functionref{apply}.
+
+    The stuff about expand-syntax is probably redundant now?  Although I
+    suppose we need something at top-level??
+\end{optPrivate}
+%
+\begin{optDefinition}
+%
+\specop{lambda}
+%
+\Syntax
+\label{lambda-syntax-table}
+\defSyntax{lambda}{
+\begin{syntax}
+    \scdef{lambda-form}: \ra{} \classref{function} \\
+    \>  ( \specopref{lambda} \scref{lambda-list} \scref{body} ) \\
+   \scdef{lambda-list}: \\
+   \>  \scref{identifier} \\
+   \>  \scref{simple-list} \\
+   \>  \scref{rest-list} \\
+   \scdef{simple-list}: \\
+   \>  ( \scseqref{identifier} ) \\
+   \scdef{rest-list}: \\
+   \>  ( \scseqref{identifier} . \scref{identifier} ) \\
+   \scdef{body}: \\
+   \>  \scseqref{form}
+\end{syntax}}%
+\showSyntaxBox{lambda}
+%
+\begin{arguments}
+    \item[lambda-list] The parameter list of the function conforming to the
+    syntax \ref{lambda-syntax-table}.
+    \item[form] An expression.
+\end{arguments}
+%
+\result%
+A function with the specified \scref{lambda-list} and sequence of \scref{form}s.
+%
+\remarks%
+The function construction operator is \specopref{lambda}.  Access to the lexical
+environment of definition is guaranteed.  The syntax of \scref{lambda-list} is
+defined in ref{lambda-syntax-table}.
+
+If \scref{lambda-list} is an \scref{identifier}, it is bound to a newly
+allocated list of the actual parameters.  This binding \index{general}{scope and
+    extent!of \specopref{lambda} bindings} has lexical scope and indefinite
+extent.  If \scref{lambda-list} is a \scref{simple-list}, the arguments are
+bound to the corresponding \scref{identifier}.  Otherwise, \scref{lambda-list}
+must be a \scref{rest-list}.  In this case, each \scref{identifier} preceding
+the dot is bound to the corresponding argument and the \scref{identifier}
+succeeding the dot is bound to a newly allocated list whose elements are the
+remaining arguments.  These bindings have lexical scope and indefinite extent.
+It is a violation if the same identifier appears more than once in a
+\scref{lambda-list}.  It is an error to modify \scref{rest-list}.
+
+\defop{defsyntax}
+%
+\Syntax
+\defSyntax{defsyntax}{
+\begin{syntax}
+    \scdef{defsyntax-form}: \ra{} \classref{function} \\
+    \>  ( \defopref{defsyntax} \scref{syntax-operator-name} \scref{lambda-list}
+    \scref{body} ) \\
+    \scdef{syntax-operator-name}: \\
+    \> \scref{identifier}
+\end{syntax}}%
+\showSyntaxBox{defsyntax}
+%
+\begin{arguments}
+    \item[syntax-operator-name] A symbol naming an immutable top-lexical binding
+    to be initialized with a function having the specified \scref{lambda-list}
+    and \scref{body}.
+
+    \item[lambda-list] The parameter list of the function conforming to the
+    syntax specified under \specopref{lambda}.
+
+    \item[body] A sequence of forms.
+\end{arguments}
+%
+\remarks%
+The \defopref{defsyntax} form defines a syntax operator \index{general}{syntax
+    operator} named by \scref{syntax-operator-name} and stores the definition as
+the top-lexical binding of \scref{syntax-operator-name}
+\index{general}{syntax operator!definition by \defopref{defsyntax}}
+\index{general}{binding!module}.  The interpretation of the \scref{lambda-list}
+is as defined for \specopref{lambda} (see \ref{lambda-syntax-table}).
+%
+\begin{note}
+    A syntax operator is automatically exported from the the module which
+    defines because it cannot be used in the module which defines it.
+\end{note}
+%
+\seealso%
+\specopref{lambda}.
+
+\defop{defun}
+%
+\Syntax
+\defSyntax{defun}{
+\begin{syntax}
+    \scdef{defun-form}: \ra{} \classref{function} \\
+    \>  \scref{simple-defun} \\
+    \>  \scref{setter-defun} \\
+   \scdef{simple-defun}: \\
+   \>  ( \defopref{defun} \scref{function-name} \scref{lambda-list} \\
+   \>\>  \scref{body} ) \\
+   \scdef{setter-defun}: \\
+   \>  ( \defopref{defun} ( \functionref{setter} \scref{function-name} )
+   \scref{lambda-list} \\
+   \>\>  \scref{body} ) \\
+   \scdef{function-name}: \\
+   \>  \scref{identifier}
+\end{syntax}}%
+\showSyntaxBox{defun}
+%
+\begin{arguments}
+    \item[function-name] A symbol naming an immutable top-lexical binding to be
+    initialized with a function having the specified \scref{lambda-list} and
+    \scref{body}.
+
+    \item[{\tt (\functionref{setter} \scref{function-name})}] An expression
+    denoting the setter function to correspond to \scref{function-name}.
+
+    \item[lambda-list] The parameter list of the function conforming to the
+    syntax specified under \specopref{lambda}.
+
+    \item[body] A sequence of forms.
+\end{arguments}
+%
+\remarks%
+The \defopref{defun} form defines a function named by \scref{function-name} and
+stores the definition (i) as the top-lexical binding of \scref{function-name} or
+(ii) as the setter function of \scref{function-name}.  The interpretation of the
+\scref{lambda-list} is as defined for \specopref{lambda}.
+%
+\rewriterules
+%
+\begin{RewriteTable}{defun}{lll}
+\begin{minipage}[t]{\columnwidth}%
+    \begin{tabbing}%
+        00\= \kill
+        (\defopref{defun} \scref{identifier}\\
+        \>\scref{lambda-list}\\
+        \>\scref{body})
+    \end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{\columnwidth}
+    \begin{tabbing}
+        00\= \kill
+        (\defopref{defconstant} \scref{identifier}\\
+        \>(\specopref{lambda} \scref{lambda-list} \\
+        \>\scref{body}))
+    \end{tabbing}
+\end{minipage}\\
+\\
+\begin{minipage}[t]{\columnwidth}
+    \begin{tabbing}
+        00\= \kill
+        (\defopref{defun}\\
+        \>(\functionref{setter} \scref{identifier})\\
+        \>\scref{lambda-list} \\
+        \>\scref{body})
+    \end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{\columnwidth}
+    \begin{tabbing}
+        00\= \kill
+        ((\functionref{setter} \functionref{setter}) \\
+        \>\scref{identifier}\\
+        \>(\specopref{lambda} \scref{lambda-list} \\
+        \>\scref{body}))
+    \end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+\syntaxform{function call}
+\index{general}{function!calling}
+%
+\Syntax
+\defSyntax{function-call}{
+\begin{syntax}
+    \scdef{function-call-form}: \ra{} \classref{object} \\
+    \>  ( \scref{operator} \scseqref{operand} ) \\
+    \scdef{operator}: \\
+    \>  \scref{identifier} \\
+    \scdef{operand}: \\
+    \>  \scref{identifier} \\
+    \>  \scref{literal} \\
+    \>  \scref{special-form} \\
+    \>  \scref{function-call-form}
+\end{syntax}}%
+\showSyntaxBox{function-call}
+%
+\begin{arguments}
+    \item[\scref{operator}] This may be a symbol---being either the name of a
+    special form, or a lexical variable---or a function call, which must result
+    in an instance of \classref{function}.
+
+    An error is signalled (condition class: \conditionref{invalid-operator}
+    \indexcondition{invalid-operator}) if the operator is not a function.
+
+    \item[\scseqref{operand}] Each \scref{operand} must be either an
+    \scref{identifier}, a \scref{literal}, a \scref{special-form} or a
+    \scref{function-call-form}.
+\end{arguments}
+%
+\result%
+The result is the value of the application of \scref{operator} to the
+evaluation of \scseqref{operand}.
+%
+\remarks%
+The \scref{operand} expressions are evaluated in order from left to
+right.  The \scref{operator} expression may be evaluated at any time
+before, during or after the evaluation of the operands.
+%
+\begin{note}
+    The above rule for the evaluation of function calls was finally agreed upon
+    for this version since it is in line with one strand of common practice, but
+    it may be revised in a future version.
+\end{note}
+%
+\seealso%
+\syntaxref{constant}, \syntaxref{symbol}, \specopref{quote}.
+
+\condition{invalid-operator}{general-condition}
+%
+\begin{initoptions}
+    \item[invalid-operator, object] The object which was being used as an
+    operator.
+
+    \item[operand-list, list] The operands prepared for the operator.
+\end{initoptions}
+%
+\remarks%
+Signalled by function call if the operator is not an instance of
+\classref{function}.
+
+\function{apply}
+%
+\Syntax
+\defSyntax{apply}{
+\begin{syntax}
+    \scdef{apply-form}: \ra{} \classref{object} \\
+    \>  ( \functionref{apply} \scref{function} \scref{body} ) \\
+    \scdef{function}: \\
+    \>  \scref{level-0-form}
+\end{syntax}}%
+\showSyntaxBox{apply}
+%
+\begin{arguments}
+    \item[function] A form which must evaluate to an instance of
+    \classref{function}.
+
+    \item[form$_1$ ... form$_{n-1}$] A sequence of expressions, which will be
+    evaluated according to the rules given in \scref{function-call-form}.
+
+    \item[form$_n$] An expression which must evaluate to a proper list.  It is
+    an error if {\em obj$_n$} is not a proper list.
+\end{arguments}
+%
+\result%
+The result is the result of calling \scref{function} with the actual parameter
+list created by appending \scref{form}$_n$ to a list of the arguments
+\scref{form}$_1$ through \scref{form}$_{n-1}$.  An error is signalled (condition
+class: \conditionref{invalid-operator}\indexcondition{invalid-operator}) if the
+first argument is not an instance of \classref{function}.
+%
+\seealso%
+\scref{function-call-form}, \conditionref{invalid-operator}.
+\end{optDefinition}
+
+\sclause{Destructive Operations}
+%
+\begin{optPrivate}
+    The term {\em closer} is a weak specification---cross ref terminology?
+\end{optPrivate}
+%
+\begin{optDefinition}
+\noindent
+An assignment operation\index{general}{assignment} modifies the contents of a
+binding named by a identifier---that is, a variable.
+
+\specop{setq}
+%
+\Syntax
+\defSyntax{setq}{
+\begin{syntax}
+    \scdef{setq-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{setq} \scref{identifier} \scref{form} )
+\end{syntax}}%
+\showSyntaxBox{setq}
+%
+\begin{arguments}
+    \item[identifier] The identifier whose lexical binding is to be updated.
+
+    \item[form] An expression whose value is to be stored in the binding of
+    \scref{identifier}.
+\end{arguments}
+%
+\result%
+The result is the value of \scref{form}.
+%
+\remarks%
+The \scref{form} is evaluated and the result is stored in the closest lexical
+binding named by \scref{identifier}.  It is a violation to modify an immutable
+binding.
+
+\function{setter}
+%
+\begin{arguments}
+    \item[reader] An expression which must evaluate to an instance of
+    \classref{function}.
+\end{arguments}
+%
+\result%
+The {\em writer\/} corresponding to {\em reader}.
+%
+\remarks%
+A generalized place update facility is provided by \functionref{setter}.  Given
+{\em reader}\index{general}{function!reader}, \functionref{setter} returns the
+corresponding update function\index{general}{function!writer}.  If no such
+function is known to \functionref{setter}, an error is signalled (condition
+class: \conditionref{no-setter}\indexcondition{no-setter}).  Thus {\tt
+    (\functionref{setter} \functionref{car})} returns the function to update the
+\functionref{car} of a pair.  New update functions can be added by using
+{setter}'s update function, which is accessed by the expression {\tt
+    (\functionref{setter} \functionref{setter})}.  Thus {\tt
+    ((\functionref{setter} \functionref{setter}) a-reader a-writer)} installs
+the function which is the value of {\tt a-writer} as the writer of the reader
+function which is the value of {\tt a-reader}.  All writer functions in this
+definition and user-defined writers have the same immutable status as other
+standard functions, such that attempting to redefine such a function, for
+example {\tt ((\functionref{setter} \functionref{setter}) \functionref{car}
+    a-new-value)}, signals an error (condition class:
+\conditionref{cannot-update-setter}\indexcondition{<cannot-update-setter>})
+%
+\seealso%
+\defopref{defgeneric}, \defopref{defmethod}, \defopref{defclass},
+\defopref{defun}.
+
+\condition{no-setter}{general-condition}
+%
+\begin{initoptions}
+    \item[object, object] The object given to \functionref{setter}.
+\end{initoptions}
+%
+\remarks%
+Signalled by \functionref{setter} if there is no updater for the given
+function.
+
+\condition{cannot-update-setter}{general-condition}
+%
+\begin{initoptions}
+    \item[accessor, object$_1$] The given accessor object.
+
+    \item[updater, object$_2$] The given updater object.
+\end{initoptions}
+%
+\remarks%
+Signalled by {\tt (\functionref{setter} \functionref{setter})} if the updater of
+the given accessor is immutable.
+%
+\seealso%
+\functionref{setter}.
+%
+\end{optDefinition}
+
+\sclause{Conditional Expressions}
+%
+\begin{optPrivate}
+    \specopref{cond} rules are strange (RPG).
+
+    Added \specopref{when} and \specopref{unless}.
+
+    Moved these here after October '90 meeting.
+\end{optPrivate}
+%
+\begin{optDefinition}
+%
+\specop{if}
+%
+\Syntax
+\defSyntax{if}{
+\begin{syntax}
+    \scdef{if-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{if} \scref{antecedent} \\
+    \>\>\> \scref{consequent} \\
+    \>\>  \scref{alternative} ) \\
+    \scdef{antecedent}: \\
+    \>  \scref{form} \\
+    \scdef{consequent}: \\
+    \>  \scref{form} \\
+    \scdef{alternative}: \\
+    \>  \scref{form} \\
+\end{syntax}}%
+\showSyntaxBox{if}
+%
+\result%
+Either the value of \scref{consequent} or \scref{alternative} depending on the
+value of \scref{antecedent}.
+%
+\remarks%
+The \scref{antecedent} is evaluated.  If the result is \true{} the
+\scref{consequent} is evaluated, otherwise the \scref{alternative} is evaluated.
+Both \scref{consequent} and \scref{alternative} must be specified.  The result
+of \specopref{if} is the result of the evaluation of whichever of
+\scref{consequent} or \scref{alternative} is chosen.
+
+\specop{cond}
+%
+\Syntax
+\defSyntax{cond}{
+    \begin{syntax}
+    \scdef{cond-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{cond} \\
+    \>\>  \scgseq{{\tt(} \scref{antecedent} \scseqref{consequent} {\tt)}} )
+\end{syntax}}%
+\showSyntaxBox{cond}
+%
+\remarks%
+The \specopref{cond} syntax operator provides a convenient syntax for
+collections of {\em if-then-elseif...else} expressions.
+%
+\rewriterules
+%
+\begin{RewriteTable}{cond}{lll}
+    (\specopref{cond}) &\rewrite& () \\
+    (\specopref{cond} (\scref{antecedent}) \\
+    \tts\ldots) &\rewrite&
+    (\specopref{or} \scref{antecedent} (\specopref{cond} \ldots)) \\
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    00\=00\= \kill
+    (\specopref{cond} \\
+    \>(\scref{antecedent}$_1$) \\
+    \>(\scref{antecedent}$_2$ \scseqref{consequent}) \\
+    \>\ldots)
+\end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    (\specopref{or} \= \scref{antecedent}$_1$ \\
+    \>00\=00\= \kill
+    \>(\specopref{cond} \\
+    \>\>(\scref{antecedent}$_2$ \\
+    \>\>\>\scseqref{consequent}) \\
+    \>\>\ldots))
+\end{tabbing}
+\end{minipage} \\
+
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    00\=00\= \kill
+    (\specopref{cond} \\
+    \>(\scref{antecedent}$_1$ \scseqref{consequent}) \\
+    \>(\scref{antecedent}$_2$ \scseqref{consequent}) \\
+    \>\ldots)
+\end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    (\specopref{if} \=\scref{antecedent}$_1$ \\
+    \>(\specopref{progn} \scseqref{consequent}) \\
+    \>00\=00\= \kill
+    \>(\specopref{cond} \\
+    \>\>(\scref{antecedent}$_2$ \\
+    \>\>\>\scseqref{consequent}) \\
+    \>\>\ldots))
+\end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+\constant{else}{symbol}
+%
+\remarks%
+This may be used to denote the default clause in \specopref{cond} and
+\specopref{case} forms and has the value \constantref{t}, \ie it is an alias for
+\constantref{t} introduced to improve readability of the \specopref{cond} and
+\specopref{case} forms.
+
+\specop{when}
+%
+\Syntax
+\defSyntax{when}{
+    \begin{syntax}
+        \scdef{when-form}: \ra{} \classref{object} \\
+        \>  ( \specopref{when} \scref{antecedent} \\
+        \>\>\> \scref{consequent} ) \\
+    \end{syntax}}%
+\showSyntaxBox{when}
+%
+\result%
+The \scref{antecedent} is evaluated and if the result is \true{} the
+\scref{consequent} is evaluated and returned otherwise \nil{} is returned.
+%
+\rewriterules
+%
+\begin{RewriteTable}{when}{lll}
+    \begin{minipage}[t]{0.45\columnwidth}
+        \begin{tabbing}
+            00\=00\= \kill
+            (\specopref{when} \scref{antecedent} \\
+            \>\scref{consequent})
+        \end{tabbing}
+    \end{minipage}
+    &\rewrite&
+    \begin{minipage}[t]{0.45\columnwidth}
+        \begin{tabbing}
+            00\=00\= \kill
+            (\specopref{if} \=\scref{antecedent} \\
+            \>\>\scref{consequent} \\
+            \>())
+        \end{tabbing}%
+    \end{minipage}%
+\end{RewriteTable}
+
+\specop{unless}
+%
+\Syntax
+\defSyntax{unless}{
+    \begin{syntax}
+        \scdef{unless-form}: \ra{} \classref{object} \\
+        \>  ( \specopref{unless} \scref{antecedent} \\
+        \>\>\> \scref{consequent} ) \\
+    \end{syntax}}%
+\showSyntaxBox{unless}
+%
+\result%
+The \scref{antecedent} is evaluated and if the result is \nil{} the
+\scref{consequent} is evaluated and returned otherwise \nil{} is returned.
+%
+\rewriterules
+%
+\begin{RewriteTable}{unless}{lll}
+    \begin{minipage}[t]{0.45\columnwidth}
+        \begin{tabbing}
+            00\=00\= \kill
+            (\specopref{unless} \scref{antecedent} \\
+            \>\scref{consequent})
+        \end{tabbing}
+    \end{minipage}
+    &\rewrite&
+    \begin{minipage}[t]{0.45\columnwidth}
+        \begin{tabbing}
+            00\=00\= \kill
+            (\specopref{if} \=\scref{antecedent} \\
+            \>\>() \\
+            \>\scref{consequent})
+        \end{tabbing}%
+    \end{minipage}%
+\end{RewriteTable}
+
+\specop{and}
+%
+\Syntax
+\defSyntax{and}{
+\begin{syntax}
+    \scdef{and-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{and} \scseqref{consequent} )
+\end{syntax}}%
+\showSyntaxBox{and}
+%
+\remarks%
+The expansion of an \specopref{and} form leads to the evaluation of the sequence
+of \scref{form}s from left to right.  The first \scref{form} in the sequence
+that evaluates to \nil{}\/ stops evaluation and none of the \scref{form}s to its
+right will be evaluated---that is to say, it is non-strict.  The result of {\tt
+    (\specopref{and})} is \true{}.  If none of the \scref{form}s evaluate to
+\nil{}, the value of the last \scref{form} is returned.
+%
+\rewriterules
+%
+\begin{RewriteTable}{and}{lll}
+    (\specopref{and}) &\rewrite& \true{} \\
+    (\specopref{and} \scref{form}) &\rewrite& \scref{form} \\
+    (\specopref{and} \scref{form}$_1$ \scref{form}$_2$ \ldots) &\rewrite&
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    (\specopref{if} \= \scref{form}$_1$\\
+    \>(\specopref{and} \scref{form}$_2$ \ldots)\\
+    \>())
+\end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+\specop{or}
+%
+\Syntax
+\defSyntax{or}{
+\begin{syntax}
+    \scdef{or-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{or} \scseqref{form} )
+\end{syntax}}%
+\showSyntaxBox{or}
+%
+\remarks%
+The expansion of an \specopref{or} form leads to the evaluation of the sequence
+of \scref{form}s from left to right.  The value of the first \scref{form} that
+evaluates to \true{} is the result of the \specopref{or} form and none of the
+\scref{form}s to its right will be evaluated---that is to say, it is non-strict.
+If none of the forms evaluate to \true{}, the value of the last \scref{form}
+is returned.
+%
+\rewriterules
+%
+\begin{RewriteTable}{or}{lll}
+    (\specopref{or}) &\rewrite& () \\
+    (\specopref{or} \scref{form}) &\rewrite& \scref{form} \\
+    (\specopref{or} \scref{form}$_1$ \scref{form}$_2$ \ldots) &\rewrite&
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    (\specopref{let} (\=(x \scref{form}$_1$))\\
+    \>(\specopref{if} \= x\\
+    \>\>x\\
+    \>\>(\specopref{or} \scref{form}$_2$ \ldots)))
+\end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+Note that {\tt x} does not occur free in any of \scref{form}$_2$ \ldots
+\scref{form}$_n$.
+%
+\end{optDefinition}
+
+\sclause{Variable Binding and Sequences}
+\label{subsubsec:variable-binding}
+%
+\begin{optPrivate}
+    The term {\em closure} is not defined.  Should expand on syntactic variants
+    and precise the definition of the scope and extent of the binding.
+
+    Should make clear that \scref{body} is a sequence of forms.  The term
+    continuation is not defined.  RPG finds ``The invocation...invalidated''
+    obscure.
+
+    In {\tt make-values} is the object copied or shared?  Rather sparse!
+
+    The phrase ``...object named by variable'' is weak.
+
+    Does {\tt multiple-argument-values} copy or not?
+
+    JAP removed all the multiple argument junk until a better model can be
+    proposed.
+
+    JAP would like to weaken the requirement that let/cc ``signal an error'' to
+    be ``is an error''.  Done.  Perhaps someone will notice this issue now.
+
+    Should \scref{lambda-list} become \scref{specialized-lambda-list}?
+\end{optPrivate}
+%
+\begin{optDefinition}
+
+\specop{let/cc}
+\ttsubindex{let/cc}{see also \specopref{block} and \specopref{return-from}}
+%
+\Syntax
+\defSyntax{let/cc}{
+\begin{syntax}
+    \scdef{let/cc-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{let/cc} \scref{identifier} \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{let/cc}
+%
+\begin{arguments}
+    \item[\scref{identifier}] To be bound to the continuation of the
+    \specopref{let/cc} form.
+    \item[\scref{body}] A sequence of forms to evaluate.
+\end{arguments}
+%
+\result%
+The result of evaluating the last form in \scref{body} or the value of
+the argument given to the continuation bound to \scref{identifier}.
+%
+\remarks%
+The \scref{identifier} is bound to a new location, which is initialized with the
+continuation of the \specopref{let/cc} form.  This binding is immutable and has
+lexical scope and indefinite extent\index{general}{scope and extent!of
+    \specopref{let/cc} binding}.  Each form in \scref{body} is evaluated in order
+in the environment extended by the above binding.  It is an error to call the
+continuation outside the dynamic extent of the \specopref{let/cc} form that
+created it.  The continuation is a function of one argument.  Calling the
+continuation causes the restoration of the lexical environment and dynamic
+environment that existed before entering the \specopref{let/cc} form.
+%
+\examples%
+An example of the use of \specopref{let/cc} is given in
+example~\ref{example:pathopen}.  The function {\tt path-open} takes a list of
+paths, the name of a file and list of options to pass to {\tt open}.  It tries
+to open the file by appending the name to each path in turn.  Each time {\tt
+    open} fails, it signals a condition that the file was not found which is
+trapped by the handler function.  That calls the continuation bound to fail to
+cause it to try the next path in the list.  When {\tt open} does find a file,
+the continuation bound to {\tt succeed} is called with the stream as its
+argument, which is subsequently returned to the caller of {\tt path-open}.  If
+the path list is exhausted, \genericref{map} (section~\ref{collection})
+terminates and an error (condition class: \conditionref{cannot-open-path}) is
+signalled.
+%
+\begin{example}
+\label{example:pathopen}
+\examplecaption{using \specopref{let/cc}}
+{\codeExample
+(defun path-open (pathlist name . options)
+  (let/cc succeed
+    (map
+      (lambda (path)
+        (let/cc fail
+          (with-handler
+            (lambda (condition resume) (fail ()))
+            (succeed
+              (apply open
+                (format () "~a/~a" path name)
+                options)))))
+      pathlist)
+    (error
+      (format ()
+        "Cannot open stream for (~a) ~a"
+        pathlist name)
+      <cannot-open-path>)))
+\endCodeExample}
+\end{example}
+%
+\seealso%
+\specopref{block}, \specopref{return-from}.
+
+\specop{block}
+%
+\ttsubindex{block}{see also \specopref{let/cc}}
+\Syntax
+\defSyntax{block}{
+\begin{syntax}
+    \scdef{block-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{block} \scref{identifier} \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{block}
+%
+\remarks%
+The block expression is used to establish a statically scoped binding of an
+escape function.  The block \scref{identifier} is bound to the
+continuation\index{general}{continuation} of the block.  The continuation can be
+invoked anywhere within the block by using \specopref{return-from}.  The
+\scref{form}s are evaluated in sequence and the value of the last one is
+returned as the value of the block form.  See also \specopref{let/cc}.
+%
+\rewriterules
+%
+\begin{RewriteTable}{block}{lll}
+    (\specopref{block} \scref{identifier}) &\rewrite& ()\\
+    (\specopref{block} \scref{identifier}  &\rewrite&
+    (\specopref{let/cc} \scref{identifier} \\
+    \tts\scref{body})                    && \tts\scref{body})
+\end{RewriteTable}
+
+The rewrite for \specopref{block} does not prevent the \specopref{block} being
+exited from anywhere in its dynamic extent, since the function bound
+to \scref{identifier} is a first-class item and can be passed as an
+argument like other values.
+%
+\seealso%
+\specopref{return-from}.
+
+\specop{return-from}
+\ttsubindex{return-from}{see also \specopref{let/cc}}
+%
+\Syntax
+\defSyntax{return-from}{
+\begin{syntax}
+    \scdef{return-from-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{return-from} \scref{identifier} \scoptref{form} )
+\end{syntax}}%
+\showSyntaxBox{return-from}
+%
+\remarks%
+In \specopref{return-from}, the \scref{identifier} names the continuation of
+the (lexical) \specopref{block} from which to return.
+%An error is signalled
+%(condition class: {\tt
+%<invalid-return-continuation>}\indexcondition{invalid-return-continuation})
+%if the value of the variable named by \scref{identifier} is not a
+%continuation.
+\specopref{return-from} is the invocation of the continuation of the block
+named by \scref{identifier}.  The \scref{form} is evaluated and the value
+is returned as the value of the block named by \scref{identifier}.
+%
+\rewriterules
+%
+\begin{RewriteTable}{return-from}{lll}
+    (\specopref{return-from} \scref{identifier}) &\rewrite& (\scref{identifier} ())\\
+\begin{minipage}[t]{0.45\columnwidth}
+\begin{tabbing}
+    00\= \kill
+    (\specopref{return-from} \\
+    \>\scref{identifier} \scref{form})
+\end{tabbing}
+\end{minipage}
+&\rewrite& (\scref{identifier} \scref{form})
+\end{RewriteTable}
+%
+\seealso%
+\specopref{block}.
+
+\specop{letfuns}
+%
+\Syntax
+\defSyntax{letfuns}{
+\begin{syntax}
+    \scdef{letfuns-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{letfuns} \\
+    \>\>  ( \scseqref{function-definition} ) \\
+    \>\>  \scref{letfuns-body} ) \\
+    \scdef{function-definition}: \\
+    \>  ( \scref{identifier} \scref{lambda-list} \scref{body} ) \\
+    \scdef{letfuns-body}: \\
+    \>  \scseqref{form}
+\end{syntax}}%
+\showSyntaxBox{letfuns}
+%
+\begin{arguments}
+    \item[identifier] A symbol naming a new inner-lexical binding to be
+    initialized with the function having the \scref{lambda-list} and \scref{body}
+    specified.
+
+    \item[lambda-list] The parameter list of the function conforming to the
+    syntax specified below.
+
+    \item[body] A sequence of forms.
+
+    \item[letfuns-body] A sequence of forms.
+\end{arguments}
+%
+\result%
+The \specopref{letfuns} operator provides for local mutually recursive function
+creation.  Each \scref{identifier} is bound to a new inner-lexical binding
+initialized with the function constructed from \scref{lambda-list} and
+\scref{body}.  The scope of the \scref{identifier}s is the entire
+\specopref{letfuns} form\index{general}{scope and extent!in \specopref{letfuns}
+    expressions}.  The \scref{lambda-list} is either a single variable or a list
+of variables---see \specopref{lambda}.  Each form in \scref{letfuns-body} is
+evaluated in order in the lexical environment extended with the bindings of the
+\scref{identifier}s.  The result of evaluating the last form in
+\scref{letfuns-body} is returned as the result of the \specopref{letfuns} form.
+
+\specop{let}
+%
+\Syntax
+\defSyntax{let}{
+\begin{syntax}
+    \scdef{let-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{let} \scoptref{identifier} ( \scseqref{binding} ) \\
+    \>\>  \scref{body} ) \\
+    \scdef{binding}: \\
+    \>  \scref{variable} \\
+    \> ( \scref{variable} \scref{form} ) \\
+    \scdef{variable}: \\
+    \> \scref{identifier}
+    \scdef{var}: \\
+    \> \scref{variable}
+\end{syntax}}%
+\showSyntaxBox{let}
+%
+\remarks%
+The optional \scref{identifier}\/ denotes that the let form can be called from
+within its \scref{body}.  This is an abbreviation for \specopref{letfuns} form in
+which \scref{identifier} is bound to a function whose parameters are the
+identifiers of the \scref{binding}s of the \specopref{let}, whose body is that of
+the \specopref{let} and whose initial call passes the values of the initializing
+form of the \scref{binding}s.  A binding is specified by either an identifier or
+a two element list of an identifier and an initializing form.  All the
+initializing forms are evaluated in order from left to right in the current
+environment and the variables named by the identifiers in the \scref{binding}s
+are bound to new locations holding the results.  Each form in \scref{body} is
+evaluated in order in the environment extended by the above bindings.  The
+result of evaluating the last form in \scref{body} is returned as the result of
+the \specopref{let} form.
+%
+\rewriterules
+%
+\begin{RewriteTable}{let}{lll}
+    (\specopref{let} () \scref{body}) &\rewrite& (\specopref{progn} \scref{body}) \\
+\begin{minipage}[t]{\columnwidth}
+\begin{tabbing}
+    (\specopref{let} (\=(\scref{var}$_1$ \scref{form}$_1$) \\
+    \>(\scref{var}$_2$ \scref{form}$_2$) \\
+    \>\scref{var}$_3$ \\
+    \>\ldots)\\
+    00\= \kill
+    \>\scref{body})
+\end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{\columnwidth}
+\begin{tabbing}
+    00\=00\=00\= \kill
+    ((\specopref{lambda} (\scref{var}$_1$ \scref{var}$_2$ \scref{var}$_3$ \ldots) \\
+    \>\>\scref{body}) \\
+    \>\scref{form}$_1$ \scref{form}$_2$ () \ldots) \\
+\end{tabbing}
+\end{minipage}\\
+\begin{minipage}[t]{\columnwidth}
+\begin{tabbing}
+    (\specopref{let} \= \scref{var}$_0$ \\
+    \>(\=(\scref{var}$_1$ \scref{form}$_1$) \\
+    \>\>\scref{var}$_2$ \\
+    \>\>\ldots)\\
+    00\= \kill
+    \>\scref{body})
+\end{tabbing}
+\end{minipage}
+&\rewrite&
+\begin{minipage}[t]{\columnwidth}
+\begin{tabbing}
+    00\= \kill
+    (\specopref{letfuns}\\
+    \>(\=(\scref{var}$_0$ (\scref{var}$_1$ \scref{var}$_2$ \ldots) \\
+    \>\>\scref{body})) \\
+    \>(\scref{var}$_0$ \scref{form}$_1$ () \ldots))
+\end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+\specop{let*}
+%
+\Syntax
+\defSyntax{let*}{
+\begin{syntax}
+    \scdef{let-star-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{let*} ( \scseqref{binding} ) \\
+    \>\>  \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{let*}
+%
+\remarks%
+A \scref{binding} is specified by a two element list of a variable and an
+initializing form.  The first initializing form is evaluated in the current
+environment and the corresponding variable is bound to a new location containing
+that result.  Subsequent bindings are processed in turn, evaluating the
+initializing form in the environment extended by the previous binding.  Each
+form in \scref{body} is evaluated in order in the environment extended by the
+above bindings.  The result of evaluating the last form is returned as the
+result of the \specopref{let*} form.
+%
+\rewriterules
+%
+\begin{RewriteTable}{let*}{lll}
+    (\specopref{let*} () \scref{body}) &\rewrite& (progn \scref{body}) \\
+\begin{minipage}[t]{\columnwidth}
+\begin{tabbing}
+    (\specopref{let*} (\=(\scref{var}$_1$ \scref{form}$_1$) \\
+    \>(\scref{var}$_2$ \scref{form}$_2$) \\
+    \>\scref{var}$_3$\\
+    \>\ldots) \\
+    00\= \kill
+    \>\scref{body})
+\end{tabbing}%
+\end{minipage}%
+&\rewrite&
+\begin{minipage}[t]{\columnwidth}%
+\begin{tabbing}%
+    00\= \kill
+    (\specopref{let} ((\scref{var}$_1$ \scref{form}$_1$)) \\
+    \>(\specopref{let*} (\=(\scref{var}$_2$ \scref{form}$_2$) \\
+    \>\>\scref{var}$_3$\\
+    \>\>\ldots) \\
+    00\=00\= \kill
+    \>\>\scref{body}))
+\end{tabbing}%
+\end{minipage}%
+\end{RewriteTable}
+
+\specop{progn}
+%
+\Syntax
+\defSyntax{progn}{
+\begin{syntax}
+    \scdef{progn-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{progn} \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{progn}
+%
+\begin{arguments}
+    \item[form\/$^*$] A sequence of forms and in certain circumstances, defining
+    forms.
+\end{arguments}
+%
+\result%
+The sequence of \scref{form}s is evaluated from left to right, returning the
+value of the last one as the result of the \specopref{progn} form.  If the
+sequence of forms is empty, \specopref{progn} returns \nil{}.
+%
+\remarks%
+If the \specopref{progn} form occurs enclosed only by \specopref{progn} forms
+and a \syntaxref{defmodule} form, then the \scref{form}s within the
+\specopref{progn} can be defining forms, since they appear in the top-lexical
+environment.  It is a violation for defining forms to appear in inner-lexical
+environments.
+
+% \specop{multiple-value-bind}{lambda-list form body}{obj}
+% \gdef\multipleValueBind{\verb+(multiple-value-bind+ lambda-list form
+%     body\verb+)+} The \scref{form} is evaluated and the elements of
+% \scref{lambda-list} are bound to the resulting values.  The cardinality of the
+% resulting values might not agree with the arity of the {\tt
+%     multiple-value-bind} \scref{lambda-list}.  If the number of values is less
+% than the arity, the excess formal parameters receive the value \nil{}.  It is
+% an error if the number of values is greater than the arity.  A conforming
+% processor must support a minimum {\tt multiple-value-bind} arity of 15.  If
+% \scref{lambda-list} is an \scref{identifier}, it is bound to a newly allocated
+% list of the multiple values.  If \scref{lambda-list} is a \scref{rest-list},
+% each \scref{identifier} preceding the dot is bound to its corresponding value
+% in the multiple value and the \scref{identifier} succeeding the dot is bound
+% to a newly allocated list of the remaining elements of the multiple value.
+% These bindings have lexical scope and extent.  Each form in \scref{body} is
+% evaluated in order in the environment extended by the above bindings.
+%
+% \standard{values}{obj$_1$ ... obj$_n$}{multiple-value(obj)} The values {\em
+%     obj$_1$} to {\em obj$_n$} are passed to the dynamically closest enclosing
+% instance of {\tt multiple-value-bind}.  If there is no such enclosing {\tt
+%     multiple-value-bind}, the excess values are discarded and only {\em
+%     obj$_1$} is returned.
+
+\specop{unwind-protect}
+%
+\Syntax
+\defSyntax{unwind-protect}{
+\begin{syntax}
+    \scdef{unwind-protect-form}: \ra{} \classref{object} \\
+    \>  (\specopref{unwind-protect} \scref{protected-form} \\
+    \>\>  \scseqref{after-form} ) \\
+    \scdef{protected-form}: \\
+    \> \scref{form} \\
+    \scdef{after-form}: \\
+    \> \scref{form}
+ \end{syntax}}%
+\showSyntaxBox{unwind-protect}
+%
+\begin{arguments}
+    \item[\scdef{protected-form}] A form.
+    \item[\scseqref{after-form}] A sequence of forms.
+\end{arguments}
+%
+\result%
+The value of \scref{protected-form}.
+%
+\remarks%
+The normal action of \specopref{unwind-protect} is to process
+\scref{protected-form} and then each of \scref{after-form}s in order, returning
+the value of \scref{protected-form} as the result of \specopref{unwind-protect}.
+A non-local exit from the dynamic extent of \scref{protected-form}, which can be
+caused by processing a non-local exit form, will cause each of
+\scref{after-form}s to be processed before control goes to the continuation
+specified in the non-local exit form.  The \scref{after-form}s are not protected
+in any way by the current \specopref{unwind-protect}.  Should any kind of
+non-local exit occur during the processing of the \scref{after-form}s, the
+\scref{after-form}s being processed are not reentered.  Instead, control is
+transferred to wherever specified by the new non-local exit but the
+\scref{after-form}s of any intervening \specopref{unwind-protect}s between the
+dynamic extent of the target of control transfer and the current
+\specopref{unwind-protect} are evaluated in increasing order of dynamic extent.
+%
+\examples
+%
+\begin{example}
+\label{example:unwind-loop}
+\examplecaption{Interaction of \specopref{unwind-protect} with non-local exits}
+{\codeExample
+(progn
+  (let/cc k1
+    (letfuns
+      ((loop
+         (let/cc k2
+           (unwind-protect (k1 10) (k2 99))
+         ;; continuation bound to k2
+         (loop))))
+      (loop)))
+  ;; continuation bound to k1
+  ...)
+\endCodeExample}
+\end{example}
+%
+The code fragment in example~\ref{example:unwind-loop} illustrates both the use
+of \specopref{unwind-protect} and of a difference between the semantics of
+\eulisp\ and some other Lisps.  Stepping through the evaluation of this form:
+{\tt k1} is bound to the continuation of its \specopref{let/cc} form; a
+recursive function named {\tt loop} is constructed, {\tt loop} is called from
+the body of the \specopref{letfuns} form; {\tt k2} is bound to the continuation
+of its \specopref{let/cc} form; \specopref{unwind-protect} calls {\tt k1}; the
+after forms of \specopref{unwind-protect} are evaluated in order; {\tt k2} is
+called; {\tt loop} is called; etc..  This program loops indefinitely.
+%
+\end{optDefinition}
+
+\sclause{Quasiquotation Expressions}
+\gdef\module{syntax-0}
+\label{backquote}
+\index{general}{quasiquotation}
+\index{general}{backquoting}
+%
+\begin{optPrivate}
+    Should it be an error to splice an improper list even if its the last item?
+\end{optPrivate}
+%
+\begin{optDefinition}
+
+\specop{quasiquote}
+%
+\Syntax
+\defSyntax{quasiquote}{
+\begin{syntax}
+    \scdef{quasiquote-form}: \ra{} \classref{object} \\
+    \> ( \specopref{quasiquote} \scref{skeleton} ) \\
+    \> \syntaxref{`}\scref{skeleton} \\
+    \scdef{skeleton}: \\
+    \>  \scref{form}
+\end{syntax}}%
+\showSyntaxBox{quasiquote}
+%
+\remarks%
+Quasiquotation is also known as backquoting.  A \specopref{quasiquote}d
+expression is a convenient way of building a structure.  The \scref{skeleton}
+describes the shape and, generally, many of the entries in the structure but
+some holes remain to be filled.  The \specopref{quasiquote} syntax operator can
+be abbreviated by using the glyph called {\em grave accent} (\syntaxref{`})
+\ttsubindex{quasiquote}{abbreviation with \syntaxref{`}}, so that {\tt
+    (\specopref{quasiquote} \scref{skeleton})} can be written
+\syntaxref{`}\scref{skeleton}.
+
+\syntaxform{`}
+%
+\remarks%
+See \specopref{quasiquote}.
+
+\specop{unquote}
+\Syntax
+\defSyntax{unquote}{
+\begin{syntax}
+    \scdef{unquote-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{unquote} \scref{form} ) \\
+    \>  \syntaxref{,}\scref{form}
+\end{syntax}}%
+\showSyntaxBox{unquote}
+%
+\remarks%
+See \specopref{unquote-splicing}.
+
+\syntaxform{,}
+%
+\remarks%
+See \specopref{unquote}.
+
+\specop{unquote-splicing}
+\Syntax
+\defSyntax{unquote-splicing}{
+\begin{syntax}
+    \scdef{unquote-splicing-form}: \ra{} \classref{object} \\
+    \>  ( \specopref{unquote-splicing} \scref{form} ) \\
+    \> \syntaxref{,@}\scref{form}
+\end{syntax}}%
+\showSyntaxBox{unquote-splicing}
+%
+\remarks%
+The holes in a \specopref{quasiquote}d expression are identified by unquote
+expressions of which there are two kinds---forms whose value is to be inserted
+at that location in the structure and forms whose value is to be spliced into
+the structure at that location.  The former is indicated by an
+\specopref{unquote} expression and the latter by an \specopref{unquote-splicing}
+expression.  In \specopref{unquote-splicing} the \scref{form} must result in a
+proper list.  The insertion of the result of an unquote-splice expression is as
+if the opening and closing parentheses of the list are removed and all the
+elements of the list are appended in place of the unquote-splice expression.
+%An
+%error is signalled (condition class: {\tt
+%<unquote-no-context>}\indexcondition{unquote-no-context}) if either of
+%these syntaxes occurs outside the scope of a \specopref{quasiquote}
+%expression.
+
+The syntax forms \specopref{unquote} and \specopref{unquote-splicing} can be
+abbreviated respectively by using the glyph called {\em comma} (\syntaxref{,})
+\ttsubindex{unquote}{abbreviation with \syntaxref{,}} preceding an expression
+and by using the diphthong {\em comma} followed by the glyph called {\em
+    commercial at} (\syntaxref{,@}) \ttindex{unquote-splicing!abbreviation to
+    ,@} preceding a form.  Thus, {\tt (\specopref{unquote} a)} may be written
+{\tt \syntaxref{,}a} and {\tt (\specopref{unquote-splicing} a)} can be written
+{\tt \syntaxref{,@}a}.
+%
+\examples
+{\tt
+\begin{tabular}{lll}
+    `(a ,(list 1 2) b) & $\rightarrow$ & (a (1 2) b)\\
+    `(a ,@(list 1 2) b) & $\rightarrow$ & (a 1 2 b)
+\end{tabular}}
+%
+\end{optDefinition}
+
+\syntaxform{,@}
+%
+\remarks%
+See \specopref{unquote-splicing}.
+
+\sclause{Summary of Level-0 Defining, Special and Function-call Forms}
+%
+\begin{optDefinition}
+%
+\raggedbottom
+%
+This section gives the syntax of the character-set, comments and all level-0
+forms starting with modules.  The syntax of data objects is given in the section
+pertaining to the class and is summarized in
+section~\ref{object-syntax-summary}.
+
+\showSyntax{character-set}
+\showSyntax{comment}
+
+\ssclause{Syntax of Level-0 modules}
+%
+\showSyntax{defmodule-0}
+
+\ssclause{Syntax of Level-0 defining forms}
+%
+\showSyntax{defining-0-forms}
+\showSyntax{defclass}
+\showSyntax{defgeneric}
+\showSyntax{defmethod}
+\showSyntax{defconstant}
+\showSyntax{deflocal}
+\showSyntax{defsyntax}
+\showSyntax{defun}
+\showSyntax{defcondition}
+
+\ssclause{Syntax of Level-0 special forms}
+%
+\showSyntax{special-0-forms}
+\showSyntax{generic-lambda}
+\showSyntax{lambda}
+\showSyntax{quote}
+\showSyntax{setq}
+\showSyntax{if}
+\showSyntax{cond}
+\showSyntax{when}
+\showSyntax{unless}
+\showSyntax{and}
+\showSyntax{or}
+\showSyntax{let/cc}
+\showSyntax{letfuns}
+\showSyntax{progn}
+\showSyntax{unwind-protect}
+\showSyntax{apply}
+\showSyntax{call-next-handler}
+\showSyntax{with-handler}
+\showSyntax{block}
+\showSyntax{return-from}
+\showSyntax{let}
+\showSyntax{let*}
+\showSyntax{quasiquote}
+\showSyntax{unquote}
+\showSyntax{unquote-splicing}
+\showSyntax{with-input-file}
+\showSyntax{with-output-file}
+\showSyntax{with-source}
+\showSyntax{with-sink}
+
+\ssclause{Syntax of Level-0 function calls}
+%
+\showSyntax{function-call}
+%
+\flushbottom
+%
+\end{optDefinition}

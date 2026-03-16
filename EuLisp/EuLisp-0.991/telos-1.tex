@@ -1,0 +1,407 @@
+\sclause{Classes and Objects}
+%
+\begin{optDefinition}
+\defop{defclass}
+\label{defclass-1}
+%
+\Syntax
+\label{defclass-syntax}
+\defSyntax{defclass-1}{
+\begin{syntax}
+    \scdef{defclass-1-form}: \\
+    \>  ( \defopref{defclass} \scref{class-name} \scref{superclass-names} \\
+    \>\>   ( \scseqref{slot-1} ) \\
+    \>\>   \scseqref{class-option-1} ) \\
+    \scdef{superclass-names}: \\
+    \>  \nil{} \\
+    \>  superclass-name \\
+    \>  ( \scseqref{superclass-name} ) \\
+    \scdef{slot-1}: \\
+    \>  \scref{slot} \\
+    \>  ( \scref{slot-name} \scseqref{slot-option-1} ) \\
+    \scdef{slot-option-1}: \\
+    \> \scref{slot-option} \\
+    \> \scref{identifier} \scref{level-1-form} \\
+    \scdef{class-option-1} \\
+    \>  \scref{class-option} \\
+    \>  \keywordref{class}: \scref{class-name} \\
+    \>  \scref{identifier} \scref{level-1-form}
+\end{syntax}}
+\showSyntaxBox{defclass-1}
+%
+\begin{arguments}
+    \item[\scref{superclass-names}] Either a symbol or a list of symbols naming
+    bindings of the class/classes to be used as the superclass/superclasses of
+    the new class (multiple
+    inheritance\index{general}{inheritance!multiple}\index{general}{multiple
+        inheritance}).  If this list of superclass names is empty, the
+    superclass is \classref{object}.  This is different from \defopref{defclass}
+    at level-0, where only one superclass may be specified.
+
+    \item[\scref{slot-1}] A list of slot specifications (see
+    below), comprising either a {\em slot-name} or a list of a {\em slot-name}
+    followed by some {\em slot-option}s.  One of the class options (see below)
+    allows the specification of the class of the slot description.
+
+    \item[\scref{class-option-1}] A key and a value (see below).  One of
+    the class options (\classref{class}) allows the specification of the class
+    of the class being defined.
+\end{arguments}
+%
+\remarks%
+This defining form defines a new class.  The resulting class will be bound to
+\scref{class-name}.  All the slot and class options are exactly the same as for
+\defopref{defclass} (\ref{defclass}).
+
+\noindent
+The \scref{slot-option-1}\/s are interpreted as follows:
+\begin{options}
+    \item[\scref{identifier}, \scref{level-1-form}]%
+    The symbol named by {\em identifier} and the value of {\em expression} are
+    passed to \functionref{make} of the slot description class along with other
+    slot options.  The values are evaluated in the lexical and dynamic
+    environment of the \defopref{defclass}.  For the language defined slot
+    description classes, no slot keywords are defined which are not specified by
+    particular \defopref{defclass} slot options.
+\end{options}
+%
+The \scref{class-option-1}\/s are interpreted as follows:
+\begin{options}
+    \item[\keyworddef{class}, \scref{class-name}]%
+    The value of this option is the class of the new class.  By default, this is
+    \classref{class}.  This option must only be specified once for the new
+    class.
+
+    \item[\scref{identifier}, \scref{level-1-form}]%
+    The symbol named by {\em identifier} and the value of {\em expression} are
+    passed to \functionref{make} on the class of the new class.  This list is
+    appended to the end of the list that \defopref{defclass} constructs.  The
+    values are evaluated in the lexical and dynamic environment of the
+    \defopref{defclass}.  This option is used for metaclasses which need extra
+    information not provided by the standard options.
+\end{options}
+%
+\end{optDefinition}
+
+\sclause{Generic Functions}
+
+\begin{optDefinition}
+\specop{generic-lambda}
+\label{generic-lambda-1}
+%
+\Syntax
+\defSyntax{generic-1-lambda}{
+\begin{syntax}
+    \scdef{generic-lambda-form}: \\
+    \>  ( \specopref{generic-lambda} \scref{gf-lambda-list} \\
+    \>\>  \scseqref{level-1-init-option} ) \\
+    \scdef{level-1-init-option}: \\
+    \>  class \scref{class-name} \\
+    \>  method-class \scref{class-name} \\
+    \>  method \scref{level-1-method-description} \\
+    \>  \scref{identifier} \scref{level-1-form} \\
+    \>  \scref{level-0-init-option} \\
+    \scdef{level-1-method-description}: \\
+    \>  ( \scseqref{method-init-option} \\
+    \>\>  \scref{specialized-lambda-list} \\
+    \>\>  \scref{body} ) \\
+    \scdef{method-init-option}: \\
+    \>  class \scref{class-name} \\
+    \>  \scref{identifier} \scref{level-1-form}
+\end{syntax}}
+\showSyntaxBox{generic-1-lambda}
+%
+\begin{arguments}
+    \item[gf-lambda-list] As level-0.  See section~\ref{defgeneric-0}.
+
+    \item[level-1-init-option\/$^*$] Format as level-0, but with additional
+    options, which are defined below.
+\end{arguments}
+%
+\result%
+A generic function.
+%
+\remarks%
+The syntax of \specopref{generic-lambda} is an extension of the level-0
+syntax allowing additional init-options.  These allow the
+specification of the class of the new generic function, which defaults
+to \classref{generic-function}, the class of all methods, which defaults
+to \classref{method}, and non-standard options. The latter are evaluated
+in the lexical and dynamic environment of \specopref{generic-lambda} and
+passed to \functionref{make} of the generic function as additional
+initialization arguments.  The additional {\em init-option\/}s over
+level-0 are interpreted as follows:
+%
+\begin{options}
+
+    \item[class, gf-class] The class of the new generic function.  This must be
+    a subclass of \classref{generic-function}.  The default is
+    \classref{generic-function}.
+
+    \item[method-class, method-class] The class of all methods to be defined on
+    this generic function.  All methods of a generic function must be instances
+    of this class.  The {\em method-class} must be a subclass of
+    \classref{method} and defaults to \classref{method}.
+
+    \item[{\em identifier}, expression] The symbol named by {\em identifier} and
+    the value of {\em expression} are passed to \functionref{make} as keywords.
+    % and each new method.
+    The values are evaluated in the lexical and dynamic environment of the
+    \defopref{defgeneric}.  This option is used for classes which need extra
+    information not provided by the standard options.
+\end{options}
+%
+In addition, method init options can be specified for the individual
+methods on a generic function.  These are interpreted as follows:
+%
+\begin{options}
+    \item[class, method-class]%
+    The class of the method to be defined. The method class must be a subclass
+    of \classref{method} and is, by default, \classref{method}. The value is
+    passed to \functionref{make} as the first argument. The symbol and the value
+    are not passed as keywords to \functionref{make}.
+
+    \item[{\em identifier}, expression]%
+    The symbol named by {\em identifier} and the value of {\em expression} are
+    passed to \functionref{make} creating a new method as keywords.  The values
+    are evaluated in the lexical and dynamic environment of the
+    \specopref{generic-lambda}.  This option is used for classes which need extra
+    information not provided by the standard options.
+\end{options}
+%
+\examples
+ In the following example an anonymous version of {\tt gf-1} (see
+\defopref{defgeneric}) is defined.  In all other respects the resulting object
+is the same as {\tt gf-1}.
+%
+{\codeExample
+(generic-lambda (arg1 (arg2 <class-a>))
+
+  class <another-gf-class>
+  class-key-a class-value-a
+  class-key-b class-value-b
+
+  method-class <another-method-class-a>
+
+  method (class <another-method-class-b>
+          method-class-b-key-a method-class-b-value-a
+          ((m1-arg1 <class-b>) (m1-arg2 <class-c>))
+          ...)
+  method (method-class-a-key-a method-class-a-value-a
+          ((m2-arg1 <class-d>) (m2-arg2 <class-e>))
+          ...)
+  method (class <another-method-class-c>
+          method-class-c-key-a method-class-c-value-a
+          ((m3-arg1 <class-f>) (m3-arg2 <class-g>))0
+          ...)
+)
+\endCodeExample}
+%
+\seealso%
+\defopref{defgeneric}.
+
+\defop{defgeneric}
+\label{defgeneric-1}
+%
+\Syntax
+\defSyntax{defgeneric-1}{
+\begin{syntax}
+    \scdef{defgeneric-1-form}: \\
+    \>  ( \defopref{defgeneric} \scref{gf-name} \scref{gf-lambda-list} \\
+    \>\>  \scref{level-1-init-option} )
+\end{syntax}}
+\showSyntaxBox{defgeneric-1}
+%
+\begin{arguments}
+    \item[gf name] As level-0.  See section~\ref{defgeneric-0}.
+
+    \item[gf lambda list] As level-0.  See section~\ref{defgeneric-0}.
+
+    \item[init option\/$^*$] As for \specopref{generic-lambda}, defined above.
+    below.
+\end{arguments}
+%
+\remarks%
+This defining form defines a new generic function.  The resulting generic
+function will be bound to {\em gf-name}.  The second argument is the formal
+parameter list.  An error is signalled (condition:
+\conditionref{non-congruent-lambda-lists}
+\indexcondition{non-congruent-lambda-lists}) if any of the methods defined on
+this generic function do not have lambda lists congruent to that of the generic
+function.  This applies both to methods defined at the same time as the generic
+function and to any methods added subsequently by \defopref{defmethod} or
+\genericref{add-method}.  An {\em init-option} is a identifier followed by its
+initial value.  The syntax of \defopref{defgeneric} is an extension of the
+level-0 syntax.  The rewrite rules for the \defopref{defgeneric} form are
+identical to those given in section~\ref{defgeneric-rewrite-rules} except that
+{\em level 1 init option} replaces {\em level 0 init option}.
+%
+\examples
+In the following example of the use of \defopref{defgeneric} a generic
+function named {\tt gf-1} is defined.  The differences between this
+function and {\tt gf-0} (see~\ref{defgeneric-0}) are
+\begin{enumerate}
+    \item The class of the generic function is specified
+    (\theclass{another-gf-class}) along with some init-options related to the
+    creation of an instance of that class.
+
+    \item The default class of the methods to be attached to the generic
+    function is specified (\theclass{another-method-class-a}) along with an
+    init-option related to the creation of an instance of that class.
+
+    \item In addition, some of the methods to be attached are of a different
+    method class (\theclass{another-method-class-b} and
+    \theclass{another-method-class-c}) also with method specific init-options.
+    These method classes are subclasses of \theclass{another-method-class-a}.
+\end{enumerate}
+%
+\begin{optPrivate}
+{\begin{verbatim}
+(defgeneric gf-1 (arg1 (arg2 <class-a>))
+  class <another-gf-class>
+  class-key-a class-value-a
+  class-key-b class-value-b
+
+  method-class <another-method-class>
+  method-class-key-a method-class-value-a
+
+  method (((m1-arg1 <class-b>) (m1-arg2 <class-c>))
+          ...)
+  method (((m2-arg1 <class-d>) (m2-arg2 <class-e>))
+          ...)
+  method (((m3-arg1 <class-f>) (m3-arg2 <class-g>))
+          ...)
+)\end{verbatim}}
+%
+\end{optPrivate}
+{\codeExample
+(defgeneric gf-1 (arg1 (arg2 <class-a>))
+
+  class <another-gf-class>
+  class-key-a class-value-a
+  class-key-b class-value-b
+
+  method-class <another-method-class-a>
+
+  method (class <another-method-class-b>
+          method-class-b-key-a method-class-b-value-a
+          ((m1-arg1 <class-b>) (m1-arg2 <class-c>))
+          ...)
+  method (method-class-a-key-a method-class-a-value-a
+          ((m2-arg1 <class-d>) (m2-arg2 <class-e>))
+          ...)
+  method (class <another-method-class-c>
+          method-class-c-key-a method-class-c-value-a
+          ((m3-arg1 <class-f>) (m3-arg2 <class-g>))
+          ...)
+)
+\endCodeExample}
+
+\sclause{Methods}
+
+\specop{method-lambda}
+\Syntax
+\defSyntax{method-lambda}{
+\begin{syntax}
+    \scdef{method-lambda-form}: \ra{} \classref{function} \\
+    \>  ( \specopref{method-lambda} \\
+    \>\>  \scseqref{method-init-option} \\
+    \>\>  \scref{specialized-lambda-list} \\
+    \>\>  \scref{body} )
+\end{syntax}}
+\showSyntaxBox{method-lambda}
+%
+\begin{arguments}
+    \item[method init option] A quoted symbol followed by an expression.
+
+    \item[specialized lambda list] As defined under \specopref{generic-lambda}.
+
+    \item[form] An expression.
+\end{arguments}
+%
+\result%
+This syntax creates and returns an anonymous method with the given
+lambda list and body.  This anonymous method can later be added to a generic
+function with a congruent lambda list via the generic function
+\genericref{add-method}.  Note that the lambda list can be specialized to
+specify the method's domain.  The value of the special keywords \classref{class}
+determines the class to instantiate; the rest of the initlist is passed to
+\functionref{make} called with this class.  The default method class is
+\classref{method}.
+%
+\remarks%
+The additional {\em method-init-option\/}s includes \classref{class}, for
+specifying the class of the method to be defined, and non-standard
+options, which are evaluated in the lexical and dynamic environment of
+\specopref{method-lambda} and passed to \genericref{initialize} of that method.
+
+\defop{defmethod}
+\Syntax
+\defSyntax{defmethod-1}{
+\begin{syntax}
+    \scdef{defmethod-1-form}: \\
+    \>  ( \defopref{defmethod} \scref{gf-locator} \\
+    \>\>  \scseqref{method-init-option} \\
+    \>\>  \scref{specialized-lambda-list} \\
+    \>\>  \scref{body} )
+\end{syntax}}%
+\showSyntaxBox{defmethod-1}%
+%
+\remarks%
+The \defopref{defmethod} form of level-1 extends that of level-0 to accept
+{\em method-init-option\/}s.  This allows for the specification of the
+method class by means of the \classref{class} init option.  This class must
+be a subclass of the method class of the host generic function. The
+method class otherwise defaults to that of the host generic function.
+In all other respects, the behaviour is as that defined in level-0.
+
+\specop{method-function-lambda}
+%
+\begin{arguments}
+    \item[lambda-list] A lambda list
+    \item[form$^*$] A sequence of forms.
+\end{arguments}
+%
+This syntax operator creates and returns an anonymous method function with the
+given lambda list and body. This anonymous method function can later be added to
+a method using \setterref{method-function}, or as the {\tt function}
+initialization value in a call of \functionref{make} on an instance of
+\classref{method}.  A function of this type is also returned by the method
+accessor \functionref{method-function}.  Only functions created using this
+syntax operator can be used as method functions.  Note that the lambda list must
+not be specialized; a method's domain is stored in the method itself.
+
+% hb: there are no setters specified yet!
+\function{call-method}
+%
+\begin{arguments}
+    \item[method] A method.
+    \item[next-methods] A list of methods.
+    \item[arg$^*$] A sequence of expressions.
+\end{arguments}
+%
+This function calls the method {\em method} with arguments {\em args}.
+The argument {\em next-methods} is a list of methods which are used as
+the applicable method list for {\em args}; it is an error if this list
+is different from the methods which would be produced by the method
+lookup function of the generic function of {\em method}.  If {\em
+method} is not attached to a generic function, its behavior is
+unspecified.  The {\em next-methods} are used to determine the next
+method to call when \specopref{call-next-method} is called within {\em
+method-fn}.
+
+\function{apply-method}
+%
+\begin{arguments}
+    \item[method] A method.
+    \item[next-methods] A list of methods.
+    \item[form$_1$ \ldots form$_{n-1}$] A sequence of expressions.
+    \item[form$_n$] An expression.
+\end{arguments}
+%
+This function is identical to \functionref{call-method} except that its last
+argument is a list whose elements are the other arguments to pass to
+the method's method function.  The difference is the same as that
+between normal function application and \functionref{apply}.
+%
+\end{optDefinition}

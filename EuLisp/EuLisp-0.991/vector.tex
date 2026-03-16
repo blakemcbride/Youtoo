@@ -1,0 +1,132 @@
+\defModule{vector}{Vectors}
+%
+\begin{optDefinition}
+The defined name of this module is {\tt vector}.  See also
+section~\ref{collection} (collections) for further operations on
+vectors.
+
+\syntaxform{vector}
+%
+A vector\index{general}{external representation!vector} is written as
+\verb+#(+{\em obj}$_1$ \ldots {\em obj}$_n$\verb+)+.  For example:
+\verb+#(1 2 3)+ is a vector of three elements, the integers {\tt 1}, {\tt 2} and
+{\tt 3}.  The representations of {\em obj$_i$} are determined by the external
+representations defined in other sections of this definition (see
+\classref{character}\ (\ref{character}), \classref{fpi}\
+(\ref{fpi}), \classref{float}\ (\ref{float}), \classref{list}\ (\ref{list}),
+\classref{string}\ (\ref{string}) and \classref{symbol}\ (\ref{symbol}), as well
+as instances of \classref{vector}\ itself.  The syntax for the external
+representation of vectors is defined below.
+%
+\Syntax
+\label{vector-syntax}
+\defSyntax{vector}{
+\begin{syntax}
+    \scdef{vector}: \\
+    \>  \#( \scseqref{object} )
+\end{syntax}}%
+\showSyntaxBox{vector}
+
+\derivedclass{vector}{sequence}
+%
+The class of all instances of \classref{vector}.
+%
+\begin{initoptions}
+    \item[size:, \classref{fpi}] The number of elements in
+    the vector.  Vectors are zero-based and thus the maximum index is {\em
+        size-1}.  If not supplied the {\em size\/} is zero.
+
+    \item[fill-value:, \classref{object}] An object with which to initialize the
+    vector.  The default fill value is \nil{}.
+\end{initoptions}
+%
+\examples
+\begin{tabular}{lcl}
+    \verb|(make <vector>)| &\Ra& \verb|#()|\\
+    \verb|(make <vector> size: 2)| &\Ra& \verb|#(() ())|\\
+    \verb|(make <vector> size: 3| &\Ra& \verb|#(#\a #\a #\a)|\\
+    \verb|  fill-value: #\a)|&&\\
+\end{tabular}
+
+\function{vector?}
+%
+\begin{arguments}
+    \item[object] Object to examine.
+\end{arguments}
+%
+\result%
+Returns {\em object\/} if it is a vector, otherwise \nil{}.
+
+\constant{maximum-vector-index}{integer}
+%
+\remarks%
+This is an implementation-defined constant.  A conforming processor must support
+a maximum vector index of at least
+32767\index{general}{implementation-defined!maximum vector
+    index}\index{general}{conformity-clause!maximum vector index}.
+
+\method{binary=}{vector}
+%
+\begin{specargs}
+    \item[vector$_1$, \classref{vector}] A vector.
+    \item[vector$_2$, \classref{vector}] A vector.
+\end{specargs}
+%
+\result%
+If the size of {\em vector$_1$} is the same (under {\tt =}) as that of {\em
+    vector$_2$}, and the result of the conjunction of the pairwise application
+of \genericref{binary=} to the elements of the arguments \true{} the result is
+{\em vector$_1$}.  If not the result is \nil{}.
+
+\method{deep-copy}{vector}
+%
+\begin{specargs}
+    \item[vector, \classref{vector}] A vector.
+\end{specargs}
+%
+\result%
+Constructs and returns a copy of {\em vector}, in which each element is the
+result of calling {\em deep-copy\/} on the corresponding element of {\em
+    vector}.
+
+\method{shallow-copy}{vector}
+%
+\begin{specargs}
+    \item[vector, \classref{vector}] A vector.
+\end{specargs}
+%
+\result%
+Constructs and returns a copy of {\em vector\/} in which each element is
+\functionref{eql} to the corresponding element in {\em vector}.
+
+\method{generic-print}{vector}
+%
+\begin{specargs}
+    \item[vector, \classref{vector}]
+    A vector to be ouptut on stream.
+    \item[stream, \classref{stream}]
+    A stream on which the representation is to be output.
+\end{specargs}
+%
+\result%
+The vector supplied as the first argument.
+%
+\remarks%
+Output the external representation of {\em vector\/} on {\em stream\/} as
+described in the introduction to this section.  Calls the generic function again
+to produce the external representation of the elements stored in the vector.
+
+\method{generic-write}{vector}
+%
+\begin{specargs}
+    \item[vector, \classref{vector}] A vector to be ouptut on stream.
+    \item[stream, \classref{stream}] A stream on which the representation is to
+    be output.
+\end{specargs}
+%
+\remarks%
+Output the external representation of {\em vector\/} on {\em stream\/} as
+described in the introduction to this section.  Calls the generic function again
+to produce the external representation of the elements stored in the vector.
+%
+\end{optDefinition}

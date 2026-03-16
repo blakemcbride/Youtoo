@@ -1,0 +1,61 @@
+\defModule{table}{Tables}
+%
+\begin{optRationale}
+    Operationally, tables resemble hashtables, but the actual representation is
+    not defined in order to permit alternative solutions, such as various forms
+    of balanced trees.
+\end{optRationale}
+%
+\begin{optDefinition}
+The defined name of this module is {\tt table}.  See also
+section~\ref{collection} (collections) for further operations on tables.
+
+\derivedclass{table}{collection}
+%
+The class of all instances of \classref{table}.
+%
+\begin{initoptions}
+    \item[comparator:, \classref{function}]%
+    The function to be used to compare keys.  The default comparison function is
+    \functionref{eql}.
+
+    \item[fill-value:, \classref{object}]%
+    An object which will be returned as the default value for any key which does
+    not have an associated value.  The default fill value is \nil{}.
+
+    \item[hash-function:, \classref{function}]%
+    The function to be used to compute an unique key for each object stored in
+    the table.  This function must return a fixed precision integer.  The hash
+    function must also satisfy the constraint that if the comparison function
+    returns \true{} for any two objects, then the hash function must return the
+    same key when applied to those two objects.  The default is an
+    implementation defined function which satisfies these conditions.
+\end{initoptions}
+
+\function{table?}
+%
+\begin{arguments}
+    \item[object] Object to examine.
+\end{arguments}
+%
+\result%
+Returns {\em object\/} if it is a table, otherwise \nil{}.
+
+\function{clear-table}
+%
+\begin{arguments}
+    \item[table] A table.
+\end{arguments}
+%
+\result%
+An empty table.
+%
+\remarks%
+All entries in {\em table\/} are deleted.  The result is \functionref{eq} to the
+argument, which is to say that the argument is modified.
+
+\derivedclass{hash-table}{table}
+%
+Place holder for \classref{hash-table} class.
+
+\end{optDefinition}

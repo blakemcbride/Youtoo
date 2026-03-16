@@ -1,0 +1,124 @@
+\defModule{fpi}{Fixed Precision Integers}
+%
+\begin{optDefinition}
+The defined name of this module is {\tt fpi}.  Arithmetic operations for
+\classref{fpi} are defined by methods on the generic
+functions defined in the compare module (\ref{compare}):
+%
+\begin{flushleft}
+    \genericref{binary=},\ttindex{binary=}\indexmeth{binary=}
+    \genericref{binary<},\ttindex{binary<}\indexmeth{binary<}
+\end{flushleft}
+%
+\noindent
+the number module:
+%
+\begin{flushleft}
+    \genericref{binary+},\ttindex{binary+}\indexmeth{binary+}
+    \genericref{binary-},\ttindex{binary-}\indexmeth{binary-}
+    \genericref{binary*},\ttindex{binary*}\indexmeth{binary*}
+    \genericref{binary/},\ttindex{binary/}\indexmeth{binary/}
+    \genericreflabel{binary\protect\%}{binarypercent},\ttindex{binary\protect\%}\indexmeth{binary\protect\%}
+    \genericref{binary-gcd},\ttindex{binary-gcd}\indexmeth{binary-gcd}
+    \genericref{binary-lcm},\ttindex{binary-lcm}\indexmeth{binary-lcm}
+    \genericref{binary-mod},\ttindex{binary-mod}\indexmeth{binary-mod}
+    \genericref{negate},\ttindex{negate}\indexmeth{negate}
+    \genericref{zero?}\ttindex{zero?}\indexmeth{zero?}
+\end{flushleft}
+
+\noindent
+and in the integer module:
+\begin{flushleft}
+    \genericref{even?}\ttindex{even?}\indexmeth{even?}
+\end{flushleft}
+
+\noindent
+The behaviour of these functions is defined in the modules noted
+above.
+
+\derivedclass{fpi}{integer}
+%
+The class of all instances of fixed precision integers.
+
+\function{int?}
+\begin{arguments}
+\item[object] Object to examine.
+\end{arguments}
+
+\result%
+Returns {\em object\/} if it is fixed precision integer, otherwise
+\nil{}.
+
+\constant{most-positive-int}{fpi}
+\index{general}{implementation-defined!most positive fixed precision integer}
+\index{general}{conformity-clause!most positive fixed precision integer}
+
+\remarks%
+This is an implementation-defined constant.  A conforming processor
+must support a value greater than or equal to $32767$ and greater than
+or equal to the value of {\tt
+maximum-vector-index}\index{general}{implementation-defined!most positive
+fixed precision integer}\index{general}{conformity-clause!most positive
+fixed precision integer}.
+
+\constant{most-negative-int}{fpi}
+\index{general}{implementation-defined!most negative fixed precision integer}
+\index{general}{conformity-clause!most negative fixed precision integer}
+
+\remarks%
+This is an implementation-defined constant.  A conforming processor
+must support a value less than or equal to
+$-32768$\index{general}{implementation-defined!most positive fixed
+precision integer}\index{general}{conformity-clause!most positive fixed
+precision integer}.
+
+\converter{string}
+%
+\begin{specargs}
+    \item[integer, \classref{fpi}] An integer.
+\end{specargs}
+%
+\result%
+Constructs and returns a string, the characters of which correspond to
+the external representation of {\em integer\/} in decimal notation.
+
+\converter{double-float}
+\begin{specargs}
+\item[integer, \classref{fpi}] An integer.
+\end{specargs}
+
+\result%
+Returns a double float whose value is the floating point approximation
+to {\em integer}.
+
+\method{generic-print}{fpi}
+\begin{specargs}
+\item[integer, \classref{fpi}] An integer to be output on {\em stream}.
+\item[stream, \classref{stream}] The stream on which the representation is
+to be output.
+\end{specargs}
+
+\result%
+The fixed precision integer supplied as the first argument.
+
+\remarks%
+Outputs external representation of {\em integer\/} on {\em stream\/}
+in decimal as defined by {\em decimal integer} at the beginning of
+this section.
+
+\method{generic-write}{fpi}
+\begin{specargs}
+\item[integer, \classref{fpi}] An integer to be output on {\em stream}.
+\item[stream, \classref{stream}] The stream on which the representation is
+to be output.
+\end{specargs}
+
+\result%
+The fixed precision integer supplied as the first argument.
+
+\remarks%
+Outputs external representation of {\em integer\/} on {\em stream\/}
+in decimal as defined by {\em decimal integer} at the beginning of
+this section.
+
+\end{optDefinition}

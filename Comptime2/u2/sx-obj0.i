@@ -1,0 +1,40 @@
+;;; EuLisp system 'youtoo'
+;;;   Interface file for module sx-obj0
+
+(definterface sx-obj0
+  (import (level-1)
+   syntax (syntax-1)
+   full-import (symbol stream3 random handler read table table1 vector convert1 format list socket stream2 lock stream1 stream float character compare collect fpi number integer copy convert string callback let-cc dynamic thread event condition bit telos level-1)
+   export (
+    ((name . def-syntax-obj) (pos . 3) (origin sx-obj0 . def-syntax-obj))
+    ((name . new-node) (pos . 2) (origin sx-obj0 . new-node))
+   )
+   local-literals (
+    (new-node . 30)
+    (def-syntax-obj . 29)
+    (progn . 27)
+    (export . 26)
+    (defclass . 25)
+    (predicate: . 24)
+    (anonymous . 23)
+    ("?" . 22)
+    (writer: . 20)
+    (reader: . 19)
+    (default: . 18)
+    (keyword: . 17)
+    ("!" . 16)
+    ("?" . 15)
+    ("-" . 14)
+    (tconc . 12)
+    (let . 11)
+    (cons . 10)
+    (m . 9)
+    (dynamic . 8)
+    (*actual-module* . 7)
+    ("module-~as!" . 6)
+    (name: . 5)
+    ("module-~as?" . 4)
+   )
+   literals (
+   )
+))
