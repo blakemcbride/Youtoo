@@ -22,7 +22,7 @@
 ###  Maintainer: Henry G. Weller
 ###-----------------------------------------------------------------------------
 ARCH := $(shell uname -m)
-include ../Lib.$(ARCH)/Makefile
+-include Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 ### Source directories
@@ -72,7 +72,7 @@ boot: $(U2_BOOT) $(EUL_BOOT_DIR)/Bin.$(ARCH)/b2h
 	$(MAKE) -C Comptime2 boot
 	$(MAKE) -C Youtoo
 	$(MAKE) -C Comptime2 bytecode2
-	$(MAKE) -C $(EUL_DIR)/Youtoo/Tools
+	$(MAKE) -C $(U2_DIR)/Tools
 	mkdir -p Lib ; cp $(EUL_LIB_DIR)/$(U2_C_DIR)/lib{boot,eval,level-0,level-1,math,telos}.i Lib
 	rm -f {Telos,Runtime,Comptime2}/lib*.i
 	@echo "DONE"
@@ -123,6 +123,7 @@ distclean: clean
 	@echo "DIST-CLEANING youtoo ..."
 	@$(call makeAll,$(SYS_DIRS),$@)
 	@$(MAKE) -C Test $@
+	@rm -rf Bin.* Lib.* .eulrc.*
 	@echo "DONE"
 
 ###-----------------------------------------------------------------------------

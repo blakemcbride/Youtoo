@@ -8,6 +8,8 @@
 ///  Maintainer: Henry G. Weller
 ///-----------------------------------------------------------------------------
 #ifdef READLINE
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
 #include "../Runtime/Ff/eul-ext.h"
 
 // Get the prompt-string from the i-rep module using `prompt-string'
@@ -19,6 +21,7 @@ char* eul_prompt_string()
     return eul_string_as_c_string(prompt_string());
 }
 
+#pragma GCC diagnostic pop
 #endif
 
 ///-----------------------------------------------------------------------------

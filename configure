@@ -1,0 +1,222 @@
+#!/bin/sh
+### Copyright 1997 A. Kind & University of Bath
+### Copyright 2010 Henry G. Weller
+###-----------------------------------------------------------------------------
+##  This file is part of
+### ---                         EuLisp System 'Youtoo'
+###-----------------------------------------------------------------------------
+##
+##  Youtoo is free software: you can redistribute it and/or modify it under the
+##  terms of the GNU General Public License version 2 as published by the Free
+##  Software Foundation.
+##
+##  Youtoo is distributed in the hope that it will be useful, but WITHOUT ANY
+##  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+##  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+##  details.
+##
+##  You should have received a copy of the GNU General Public License along with
+##  this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+###-----------------------------------------------------------------------------
+### Description:
+##    Generates the build configuration for Youtoo.
+##
+##    Creates:
+##      Lib.${ARCH}/Makefile  - build variables included by all Makefiles
+##      Bin.${ARCH}/          - output directory for executables
+##      .eulrc.${ARCH}        - runtime configuration for the compiler
+##
+### Options:
+##    The system architecture may be specified as an argument
+##    which overrides the default.
+##
+##    Set CC to use a specific C compiler.
+##    Set U2_GC_DIR to point to the Boehm GC installation prefix.
+###-----------------------------------------------------------------------------
+
+###-----------------------------------------------------------------------------
+### Set platform and architecture
+###-----------------------------------------------------------------------------
+OSTYPE=$(uname -s)
+
+if [ $# -ge 1 ]; then
+    ARCH=$1
+else
+    ARCH=$(uname -m)
+fi
+
+###-----------------------------------------------------------------------------
+### Set directories
+###-----------------------------------------------------------------------------
+EUL_DIR=$(cd "$(dirname "$0")" && pwd)
+EUL_VERSION=pre-0.991
+
+EUL_BIN_DIR=$EUL_DIR/Bin.$ARCH
+EUL_LIB_DIR=$EUL_DIR/Lib.$ARCH
+EUL_BOOT_DIR=${EUL_DIR}.boot
+
+###-----------------------------------------------------------------------------
+### Set GC installation directory
+###-----------------------------------------------------------------------------
+if [ -z "$U2_GC_DIR" ]; then
+    if [ -f /usr/include/gc/gc.h ]; then
+        U2_GC_DIR=/usr
+    elif [ -f /usr/local/include/gc/gc.h ]; then
+        U2_GC_DIR=/usr/local
+    else
+        echo "*** WARNING [configure]: cannot find gc.h"
+        echo "    Set U2_GC_DIR to the Boehm GC installation prefix"
+        echo "    or install gc-devel / libgc-dev"
+        U2_GC_DIR=/usr/local
+    fi
+fi
+
+###-----------------------------------------------------------------------------
+### C compiler
+###-----------------------------------------------------------------------------
+if [ -z "$CC" ]; then
+    gcc_path=$(which gcc 2>/dev/null)
+    if [ -n "$gcc_path" ]; then
+        CC=gcc
+    else
+        CC=cc
+    fi
+fi
+
+###-----------------------------------------------------------------------------
+### System-specific settings
+###-----------------------------------------------------------------------------
+case $OSTYPE in
+Linux)
+    if [ "$ARCH" = x86_64 ]; then
+        WORD_LENGTH=64
+    elif [ "$ARCH" = i686 ]; then
+        WORD_LENGTH=32
+    else
+        echo "*** ERROR [configure]: unknown $OSTYPE architecture $ARCH" >&2
+        exit 1
+    fi
+    AR="ar cruv"
+    RANLIB="ranlib"
+    ;;
+FreeBSD)
+    if [ "$ARCH" = x86_64 ] || [ "$ARCH" = amd64 ]; then
+        WORD_LENGTH=64
+    elif [ "$ARCH" = i686 ] || [ "$ARCH" = i386 ]; then
+        WORD_LENGTH=32
+    else
+        echo "*** ERROR [configure]: unknown $OSTYPE architecture $ARCH" >&2
+        exit 1
+    fi
+    AR="ar cruv"
+    RANLIB="ranlib"
+    ;;
+Darwin)
+    if [ "$ARCH" = x86_64 ] || [ "$ARCH" = arm64 ]; then
+        WORD_LENGTH=64
+    else
+        echo "*** ERROR [configure]: unknown $OSTYPE architecture $ARCH" >&2
+        exit 1
+    fi
+    AR="ar cruv"
+    RANLIB="ranlib"
+    ;;
+*)
+    echo "*** ERROR [configure]: unknown system type $OSTYPE" >&2
+    exit 1
+    ;;
+esac
+
+###-----------------------------------------------------------------------------
+### Set flags
+###-----------------------------------------------------------------------------
+U2_CFLAGS="-std=gnu99 -Wall -Wno-sequence-point -fPIC -O2 -fno-strict-aliasing"
+U2_CFLAGS="$U2_CFLAGS -I${EUL_DIR}/include -I${EUL_DIR}/Vm -I${U2_GC_DIR}/include"
+U2_CFLAGS="$U2_CFLAGS -DREADLINE -m$WORD_LENGTH"
+U2_LIBS="-lmain -leval -lmath -llevel-0 -llevel-1 -leval -ltelos -lboot -leulvm -lm -lreadline -lpthread"
+
+EUL_DIR_OP=-DEUL_DIR="'\"${EUL_DIR}\"'"
+EUL_ARCH_OP=-DEUL_ARCH="'\"${ARCH}\"'"
+WORD_LEN_OP=-DWORD_LENGTH=$WORD_LENGTH
+
+###-----------------------------------------------------------------------------
+### Print configuration
+###-----------------------------------------------------------------------------
+echo "CONFIGURING Youtoo ..."
+echo "  Dir:            $EUL_DIR"
+echo "  Architecture:   $ARCH"
+echo "  Word length:    $WORD_LENGTH"
+echo "  System:         $OSTYPE"
+echo "  Compiler:       $CC"
+echo "  GC dir:         $U2_GC_DIR"
+echo "  Compiler flags: $U2_CFLAGS"
+echo "  Libraries:      $U2_LIBS"
+
+###-----------------------------------------------------------------------------
+### Create output directories
+###-----------------------------------------------------------------------------
+mkdir -p "$EUL_LIB_DIR"
+mkdir -p "$EUL_BIN_DIR"
+
+###-----------------------------------------------------------------------------
+### Create Lib.${ARCH}/Makefile
+###-----------------------------------------------------------------------------
+name=${EUL_LIB_DIR}/Makefile
+echo "  Creating $name ..."
+cat > "$name" << MEOF
+### Generated by Youtoo configure
+CC = ${CC}
+CFLAGS = ${U2_CFLAGS} ${WORD_LEN_OP} ${EUL_DIR_OP} ${EUL_ARCH_OP}
+ARCH_DIR = platforms/\$(ARCH)
+.PRECIOUS: %/.
+%/.:
+	mkdir -p \$(@)
+.DEFAULT_GOAL :=
+\$(ARCH_DIR)/%.o : %.c | \$(ARCH_DIR)/.
+	mkdir -p \$(@D)
+	\$(CC) -c \$(CFLAGS) \$(CPPFLAGS) \$< -o \$@
+U2_LIBS = ${U2_LIBS}
+AR = ${AR}
+RANLIB = ${RANLIB}
+ARCH = ${ARCH}
+OSTYPE = ${OSTYPE}
+WORD_LENGTH = ${WORD_LENGTH}
+EUL_VERSION = ${EUL_VERSION}
+EUL_DIR = ${EUL_DIR}
+EUL_BOOT_DIR = ${EUL_BOOT_DIR}
+EUL_BIN_DIR = ${EUL_BIN_DIR}
+EUL_LIB_DIR = ${EUL_LIB_DIR}
+U2_DIR = ${EUL_DIR}
+U2 = ${EUL_BIN_DIR}/youtoo
+U2_BOOT = ${EUL_BOOT_DIR}/Bin.${ARCH}/youtoo.sh
+U2_C_DIR = u2
+U2_GC_DIR = ${U2_GC_DIR}
+
+makeAll = +\$(foreach dir, \$(1), \$(MAKE) -C \$(dir) \$(2);)
+MEOF
+
+###-----------------------------------------------------------------------------
+### Create .eulrc.${ARCH}
+###-----------------------------------------------------------------------------
+name_rc=${EUL_DIR}/.eulrc.${ARCH}
+echo "  Creating $name_rc ..."
+cat > "$name_rc" << RCEOF
+;;; EuLisp System 'Youtoo' configuration
+
+(
+(CC . "${CC}")
+(CFLAGS . "${WORD_LEN_OP} ${U2_CFLAGS} ")
+(CLIBS . "${U2_LIBS}")
+(AR . "${AR}")
+(RANLIB . "${RANLIB}")
+(ARCH . "${ARCH}")
+(U2_C_DIR . "u2")
+(OSTYPE . "${OSTYPE}")
+(VERSION . "${EUL_VERSION}")
+)
+RCEOF
+
+echo "DONE"
+
+###-----------------------------------------------------------------------------

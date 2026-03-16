@@ -169,10 +169,11 @@ static int binding_vector_size;
 LispRef *create_binding_vector(char *module_name, FILE * fp)
 {
     binding_vector_size = 0;
-    while (fgets(buf, 20, fp) != NULL &&
+    char *result;
+    while ((result = fgets(buf, 20, fp)) != NULL &&
     strncmp(buf, "/* Module bindings ", 19));
 
-    if (buf != NULL)
+    if (result != NULL)
     {
         fscanf(fp, "with size %d]", &binding_vector_size);
     }
@@ -215,9 +216,10 @@ int load_compiled_module(char *module_name, FILE * fp)
 ///-----------------------------------------------------------------------------
 int create_next_bytevector(LispRef * bv_ptr, FILE * fp, LispRef * binding_vec)
 {
-    while (fgets(buf, 18, fp) != NULL && strncmp(buf, "  /* Byte-vector ", 17));
+    char *result;
+    while ((result = fgets(buf, 18, fp)) != NULL && strncmp(buf, "  /* Byte-vector ", 17));
 
-    if (buf == NULL)
+    if (result == NULL)
     {
         return 0;
     }

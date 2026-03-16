@@ -22,7 +22,7 @@
 ###  Maintainer: Henry G. Weller
 ###-----------------------------------------------------------------------------
 ARCH := $(shell uname -m)
-include ../../Lib.$(ARCH)/Makefile
+-include ../Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 ### Reset U2 to use the bootstrap youtoo
@@ -190,7 +190,6 @@ boot-clean: clean
 
 .PHONY: clean
 clean:
-	@rm -f $(U2_C_DIR)/lib*.i
 	@rm -rf $(ARCH_DIR)
 
 .PHONY: distclean

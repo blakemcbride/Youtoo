@@ -22,7 +22,7 @@
 ###  Maintainer: Henry G. Weller
 ###-----------------------------------------------------------------------------
 ARCH = $(shell uname -m)
-include ../../Lib.$(ARCH)/Makefile
+-include ../Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 ### Reset U2 to use the bootstrap executable

@@ -24,7 +24,7 @@
 ##    bootstrapping simpler.
 ###-----------------------------------------------------------------------------
 ARCH := $(shell uname -m)
-include ../../Lib.$(ARCH)/Makefile
+-include ../Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 ### Source files
@@ -47,11 +47,11 @@ all: b2h i2doc
 b2h: $(EUL_BIN_DIR)/b2h
 
 $(EUL_BIN_DIR)/b2h: $(B2H_EM) | $(ARCH_DIR)/.
-	$(MAKE) -C $(EUL_DIR)/Modules/Vmeta
+	$(MAKE) -C $(U2_DIR)/Modules/Vmeta
 	${U2} ${U2FLAGS} b2h \
 		--object-dir $(ARCH_DIR) \
 		-l level-1 \
-		--load-path $(EUL_DIR)/Modules/Vmeta
+		--load-path $(U2_DIR)/Modules/Vmeta
 	mv $(ARCH_DIR)/b2h $(EUL_BIN_DIR)/b2h
 
 ###-----------------------------------------------------------------------------

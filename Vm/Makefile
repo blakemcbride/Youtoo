@@ -22,7 +22,7 @@
 ###  Maintainer: Henry G. Weller
 ###-----------------------------------------------------------------------------
 ARCH := $(shell uname -m)
-include ../../Lib.$(ARCH)/Makefile
+-include ../Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 ### Output library files

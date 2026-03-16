@@ -25,7 +25,7 @@
 ##    bootstrapping to check if everything bootstrapped ok.
 ###-----------------------------------------------------------------------------
 ARCH := $(shell uname -m)
-include ../../Lib.$(ARCH)/Makefile
+-include ../Lib.$(ARCH)/Makefile
 
 ###-----------------------------------------------------------------------------
 TESTS = test1 test2 test3 test4

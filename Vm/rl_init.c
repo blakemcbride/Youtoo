@@ -28,9 +28,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include "../../RLCompletion/eulisp_keywords.h"
-#include "../../RLCompletion/youtoo_keywords.h"
-#include "../../RLCompletion/keyword_completion.h"
+#include "RLCompletion/eulisp_keywords.h"
+#include "RLCompletion/youtoo_keywords.h"
+#include "RLCompletion/keyword_completion.h"
 
 // Name of the readline command history file
 char* rl_histfile = NULL;

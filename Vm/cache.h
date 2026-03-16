@@ -298,7 +298,7 @@ goon:                                                                          \
 #define EXTERNAL_FAST_METHOD_LOOKUP(gf, m, key, next_methods)                  \
     {                                                                          \
         LispRef vec, val_dom, entry, tab_val_dom, meth_funs;                   \
-        ptrInt n, i, res=0;                                                    \
+        ptrInt n __attribute__((unused)), i, res=0;                            \
         i = key + GF_METHOD_CACHE_HEADER_SIZE;                                 \
         GF_GET_METHOD_CACHE(vec, n, gf, GF_DEFAULT_METHOD_CACHE_SIZE);         \
         GF_GET_VALUE_DOMAIN##m(val_dom);                                       \
