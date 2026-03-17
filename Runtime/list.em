@@ -370,24 +370,19 @@
 (defmethod member (x (l <list>) . preds)
   (apply member-list x l preds))
 
-(defmethod find (x (l <list>) . preds)
-  (if (null? preds)
-      (find1-list x l)
-    (let ((pred (car preds)))
-      (labels
-       ((loop (ll i)
-              (if (atom? ll) ll
-                (if (pred x (car ll)) i
-                  (loop (cdr ll) (fpi-binary+ i 1))))))
-       (loop l 0)))))
-
-(defun find1-list (x l)
-  (labels
-   ((loop (ll i)
-          (if (atom? ll) ll
-            (if (eql x (car ll)) i
-              (loop (cdr ll) (fpi-binary+ i 1))))))
-   (loop l 0)))
+(defmethod find-key ((l <list>) (test <function>) . rest)
+  (let ((skip (if (null? rest) 0 (car rest)))
+        (failure (if (or (null? rest) (null? (cdr rest))) () (cadr rest))))
+    (labels
+     ((loop (ll i skipped)
+            (if (atom? ll) failure
+              (if (test (car ll))
+                  (if (fpi-binary< skipped skip)
+                      (loop (cdr ll) (fpi-binary+ i 1)
+                            (fpi-binary+ skipped 1))
+                    i)
+                (loop (cdr ll) (fpi-binary+ i 1) skipped)))))
+     (loop l 0 0))))
 
 (defmethod any? ((fun <function>) (l <list>) . cs)
   (if (null? cs)

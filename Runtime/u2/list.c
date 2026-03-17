@@ -277,7 +277,7 @@ void initialize_module_list()
   /* Byte-vector with size: 10 is_init: 0 index: 172 binding: anonymous */
   static const void *G004571[] = {I(ab,1c,7a,12),I(1b,44,04,1d),I(36,1d,1d,10),I(47,00,00,1c),I(51,1b,44,05),I(1f,03,36,0d),I(1f,04,11,1f),I(04,2b,47,00),I(01,3d,02,05),I(22,02,45,03)};
 
-  /* Byte-vector with size: 11 is_init: 0 index: 173 binding: find1-list */
+  /* Byte-vector with size: 11 is_init: 0 index: 173 binding: find-key-list */
   static const void *G004573[] = {I(ab,46,02,1c),I(48,00,00,86),I(1b,48,00,01),I(23,00,00,00),B(list ,47),I(23,00,00,00),B(list ,172),I(3b,02,48,00),I(01,1c,82,47),I(00,01,3d,02),I(03,45,03,00)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 174 binding: cddar */
@@ -520,7 +520,7 @@ void initialize_module_list()
   eul_intern_symbol(sym_4534,"(method (setter element))");
   eul_intern_symbol(sym_4535,"(method size)");
   eul_intern_symbol(sym_4536,"(method member)");
-  eul_intern_symbol(sym_4537,"(method find)");
+  eul_intern_symbol(sym_4537,"(method find-key)");
   eul_intern_symbol(sym_4538,"(method any?)");
   eul_intern_symbol(sym_4539,"(method all?)");
   eul_intern_symbol(sym_4540,"(method select)");
@@ -638,7 +638,7 @@ void initialize_module_list()
   eul_intern_symbol(sym_4700,"cdddar");
   eul_intern_symbol(sym_4701,"all?2-list");
   eul_intern_symbol(sym_4702,"cddar");
-  eul_intern_symbol(sym_4703,"find1-list");
+  eul_intern_symbol(sym_4703,"find-key-list");
   eul_intern_symbol(sym_4704,"cadaar");
   eul_intern_symbol(sym_4705,"cdar");
   eul_intern_symbol(sym_4706,"caddar");

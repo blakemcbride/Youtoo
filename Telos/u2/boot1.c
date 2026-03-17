@@ -224,7 +224,7 @@ void initialize_module_boot1()
   /* Byte-vector with size: 1 is_init: 0 index: 102 binding: character? */
   static const void *G00322[] = {I(aa,81,45,00)};
 
-  /* Byte-vector with size: 1 is_init: 0 index: 103 binding: fpi? */
+  /* Byte-vector with size: 1 is_init: 0 index: 103 binding: int? */
   static const void *G00324[] = {I(aa,7e,45,00)};
 
   /* Byte-vector with size: 1 is_init: 0 index: 104 binding: * */
@@ -364,7 +364,7 @@ void initialize_module_boot1()
   eul_intern_symbol(sym_378,"atom?");
   eul_intern_symbol(sym_379,"cdr");
   eul_intern_symbol(sym_380,"*");
-  eul_intern_symbol(sym_381,"fpi?");
+  eul_intern_symbol(sym_381,"int?");
   eul_intern_symbol(sym_382,"character?");
   eul_intern_symbol(sym_383,"%");
   eul_intern_symbol(sym_384,"car");

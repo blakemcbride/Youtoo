@@ -34,8 +34,8 @@
            character?
            uppercase?
            lowercase?
-           alphap
-           alnump
+           alpha?
+           alnum?
            digit?
            graph?
            as-lowercase
@@ -70,8 +70,8 @@
 
 (defun uppercase? (c) (and (isupper c) c))
 (defun lowercase? (c) (and (islower c) c))
-(defun alnump     (c) (and (isalnum c) c))
-(defun alphap     (c) (and (isalpha c) c))
+(defun alnum?     (c) (and (isalnum c) c))
+(defun alpha?     (c) (and (isalpha c) c))
 (defun digit?     (c) (and (isdigit c) c))
 (defun graph?     (c) (and (isgraph c) c))
 

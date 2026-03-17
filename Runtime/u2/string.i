@@ -58,7 +58,7 @@
     (|(method accumulate)| . 60)
     (|(method binary<)| . 59)
     (|(method binary=)| . 58)
-    (|(method emptyp)| . 57)
+    (|(method empty?)| . 57)
     (|(method initialize)| . 56)
     (|(setter string-data)| . 55)
     (string . 54)

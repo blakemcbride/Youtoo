@@ -111,8 +111,8 @@ void initialize_module_mop_inspect()
   eul_allocate_bytevector( G001611,G001610);
   eul_allocate_bytevector( G001613,G001612);
   eul_allocate_bytevector( G001615,G001614);
-  eul_intern_symbol(sym_1618,"slotp");
-  eul_intern_symbol(sym_1619,"methodp");
+  eul_intern_symbol(sym_1618,"slot?");
+  eul_intern_symbol(sym_1619,"method?");
   eul_intern_symbol(sym_1620,"cpl-subclass?");
   eul_intern_symbol(sym_1621,"primitive-slot-value");
   eul_intern_symbol(sym_1622,"subcode?");

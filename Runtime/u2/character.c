@@ -191,9 +191,9 @@ void initialize_module_character()
   eul_intern_symbol(sym_3089,"character-as-string");
   eul_intern_symbol(sym_3090,"graph?");
   eul_intern_symbol(sym_3091,"lowercase?");
-  eul_intern_symbol(sym_3092,"alnump");
+  eul_intern_symbol(sym_3092,"alnum?");
   eul_intern_symbol(sym_3093,"digit?");
-  eul_intern_symbol(sym_3094,"alphap");
+  eul_intern_symbol(sym_3094,"alpha?");
   eul_intern_symbol(sym_3095,"uppercase?");
   eul_intern_symbol(sym_3096,"top-level");
   eul_allocate_bytevector( G003088,G003087);

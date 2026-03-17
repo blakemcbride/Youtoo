@@ -31,15 +31,15 @@
            number
            integer)
    export (<fpi>
-           fpi?
+           int?
            fpi-binary-
            fpi-binary*
            fpi-binary/
            fpi-binary%
            fpi-binary-mod
            fpi-as-string
-           most-positive-fpi
-           most-negative-fpi))
+           most-positive-int
+           most-negative-int))
 
 ;;;-----------------------------------------------------------------------------
 ;;; Class <fpi>
@@ -49,10 +49,10 @@
 ;;;-----------------------------------------------------------------------------
 ;;; Limits (-2^29 - 1  ... 2^29 - 1)
 ;;;-----------------------------------------------------------------------------
-;;***HGW doesn't work 32bit(defconstant most-positive-fpi 536870911)
-;;***HGW doesn't work 32bit(defconstant most-negative-fpi -536870911)
-(defconstant most-positive-fpi 53687091)
-(defconstant most-negative-fpi -53687091)
+;;***HGW doesn't work 32bit(defconstant most-positive-int 536870911)
+;;***HGW doesn't work 32bit(defconstant most-negative-int -536870911)
+(defconstant most-positive-int 53687091)
+(defconstant most-negative-int -53687091)
 
 ;;;-----------------------------------------------------------------------------
 ;;; Arithmetic

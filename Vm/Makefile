@@ -76,15 +76,8 @@ depend: | $(ARCH_DIR)/.
 ###-----------------------------------------------------------------------------
 ### Miscellaneous commands
 ###-----------------------------------------------------------------------------
-.PHONY: boot-clean
-boot-clean: clean
-
 .PHONY: clean
 clean:
-	@rm -rf $(ARCH_DIR)
-
-.PHONY: distclean
-distclean:
-	@rm -rf platforms
+	@rm -rf $(ARCH_DIR) platforms
 
 ###-----------------------------------------------------------------------------

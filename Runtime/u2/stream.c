@@ -170,7 +170,7 @@ void initialize_module_stream()
   /* Byte-vector with size: 30 is_init: 0 index: 72 binding: anonymous */
   static const void *G006554[] = {I(aa,1b,47,00),I(02,1a,1b,44),I(6b,47,00,04),I(84,24,00,00),B(stream2 ,23),I(08,1b,2b,47),I(00,04,8a,04),I(24,00,00,00),B(stream2 ,23),I(08,1b,1f,03),I(47,00,01,0c),I(2a,47,00,04),I(1d,1c,84,1d),I(24,00,00,00),B(stream2 ,23),I(09,22,02,2a),I(47,00,01,27),I(0a,51,1b,44),I(04,1b,36,07),I(1d,47,00,05),I(1a,12,1b,44),I(10,47,00,00),I(24,00,00,00),B(stream2 ,24),I(3c,01,36,02),I(86,2a,1f,06),I(2b,47,00,03),I(3d,01,07,22),I(05,36,02,86),I(45,02,00,00)};
 
-  /* Byte-vector with size: 21 is_init: 0 index: 73 binding: sprint-char* */
+  /* Byte-vector with size: 21 is_init: 0 index: 73 binding: sprin-char* */
   static const void *G006556[] = {I(43,03,46,07),I(1d,48,00,00),I(1c,48,00,01),I(1b,48,00,02),I(47,00,00,8a),I(05,24,00,00),B(stream2 ,20),I(08,1b,48,00),I(04,47,00,04),I(8a,03,24,00),B(stream2 ,23),I(08,1b,48,00),I(05,86,1b,48),I(00,03,23,00),B(stream ,42),I(23,00,00,00),B(stream ,72),I(3b,01,48,00),I(03,82,47,00),I(03,3d,01,06),I(45,06,00,00)};
 
   eul_allocate_static_string(str_6560, "%s", 2);
@@ -181,13 +181,13 @@ void initialize_module_stream()
   /* Byte-vector with size: 29 is_init: 0 index: 77 binding: print-string */
   static const void *G006562[] = {I(43,03,46,07),I(1d,48,00,00),I(1c,48,00,01),I(1b,48,00,02),I(47,00,02,8a),I(05,24,00,00),B(stream2 ,20),I(08,1b,48,00),I(04,47,00,04),I(8a,03,24,00),B(stream2 ,23),I(08,2c,1b,48),I(00,05,86,1b),I(48,00,03,23),B(stream ,42),I(23,00,00,00),B(stream ,76),I(3b,01,48,00),I(03,82,47,00),I(03,3c,01,2a),I(47,00,01,2c),I(47,00,00,1c),I(0b,27,0a,51),I(1b,44,0e,47),I(00,02,24,00),B(stream2 ,24),I(3c,01,36,02),I(86,2a,47,00),I(00,45,08,00)};
 
-  /* Byte-vector with size: 11 is_init: 0 index: 78 binding: sprint-char */
+  /* Byte-vector with size: 11 is_init: 0 index: 78 binding: sprin-char */
   static const void *G006564[] = {I(43,fd,1b,44),I(17,1b,10,1f),I(03,1f,03,1d),I(24,00,00,00),B(stream ,10),I(3d,03,04,22),I(01,36,0d,1d),I(1d,24,00,00),B(stream ,23),I(3d,02,03,45),I(03,00,00,00)};
 
   /* Byte-vector with size: 5 is_init: 0 index: 79 binding: print */
   static const void *G006566[] = {I(a8,24,00,00),B(stream2 ,35),I(1c,24,00,00),B(stream ,7),I(3d,02,01,00)};
 
-  /* Byte-vector with size: 12 is_init: 0 index: 80 binding: print-char */
+  /* Byte-vector with size: 12 is_init: 0 index: 80 binding: prin-char */
   static const void *G006568[] = {I(a7,1b,44,18),I(1b,10,24,00),B(stream2 ,35),I(1f,03,1d,24),B(stream ,10),I(3d,03,03,22),I(01,36,11,24),B(stream2 ,35),I(1d,24,00,00),B(stream ,23),I(3d,02,02,45),I(02,00,00,00)};
 
   /* Byte-vector with size: 3 is_init: 0 index: 81 binding: sflush */
@@ -294,11 +294,11 @@ void initialize_module_stream()
   eul_intern_symbol(sym_6595,"output-list-contents");
   eul_intern_symbol(sym_6596,"write");
   eul_intern_symbol(sym_6597,"sflush");
-  eul_intern_symbol(sym_6598,"print-char");
+  eul_intern_symbol(sym_6598,"prin-char");
   eul_intern_symbol(sym_6599,"print");
-  eul_intern_symbol(sym_6600,"sprint-char");
+  eul_intern_symbol(sym_6600,"sprin-char");
   eul_intern_symbol(sym_6601,"print-string");
-  eul_intern_symbol(sym_6602,"sprint-char*");
+  eul_intern_symbol(sym_6602,"sprin-char*");
   eul_intern_symbol(sym_6603,"swrite-all");
   eul_intern_symbol(sym_6604,"sprint");
   eul_intern_symbol(sym_6605,"sprint-all");

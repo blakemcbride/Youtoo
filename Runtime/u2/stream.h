@@ -38,7 +38,7 @@ extern LispRef stream_bindings[];
 #define disconnect_fn_index 40 
 #define end_of_stream_fn_index 18 
 #define _socket__X60_X62_fn_index 8 
-#define print_char_fn_index 14 
+#define prin_char_fn_index 14
 #define _stream_condition__X60_X62_fn_index 39 
 #define _open_file_streams__X42_X42_fn_index 37 
 #define stream_sink_fn_index 38 
@@ -75,7 +75,7 @@ extern LispRef stream_bindings[];
 #define _open_file_streams__lock_X42_X42_fn_index 11 
 #define control_block_buffer_pos_fn_index 10 
 #define stream_control_block__X63_fn_index 30 
-#define sprint_char_fn_index 12 
+#define sprin_char_fn_index 12
 #define O_CREAT_fn_index 8 
 #define fprintf_fn_index 21 
 #define eul_close_fn_index 16 

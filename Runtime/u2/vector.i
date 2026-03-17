@@ -7,7 +7,7 @@
    full-import (mop-alloc mop-access mop-prim mop-key mop-class mop-init mop-inspect mop-gf mop-meth mop-defcl boot boot1 telos condition event thread dynamic let-cc convert copy compare callback collect integer number fpi list)
    export (
     ((name . map1-vector) (pos . 15) (origin vector . map1-vector))
-    ((name . maximum-vector-size) (pos . 14) (origin vector . maximum-vector-size) (class . constant) (value 536870911))
+    ((name . maximum-vector-index) (pos . 14) (origin vector . maximum-vector-index) (class . constant) (value 536870911))
     ((name . do1-vector) (pos . 16) (origin vector . do1-vector))
     ((name . vector-append) (pos . 8) (origin vector . vector-append))
     ((name . vector-empty?) (pos . 19) (origin vector . vector-empty?) (inline (G007321 (primitive-size) (fpi-zerop))))
@@ -63,7 +63,7 @@
     (|(method any?)| . 66)
     (|(method accumulate1)| . 65)
     (|(method accumulate)| . 64)
-    (|(method emptyp)| . 63)
+    (|(method empty?)| . 63)
     (|(method initialize)| . 62)
     (|(method vector?)| . 61)
     (direct-keywords: . 60)

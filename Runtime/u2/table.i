@@ -50,7 +50,7 @@
     (|(method any?)| . 52)
     (|(method map)| . 51)
     (|(method do)| . 50)
-    (|(method emptyp)| . 49)
+    (|(method empty?)| . 49)
     (|(method (setter table-ref))| . 48)
     ((setter table-ref) . 47)
     (setter . 46)

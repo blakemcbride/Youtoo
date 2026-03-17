@@ -189,17 +189,10 @@ endif
 ###-----------------------------------------------------------------------------
 ### Miscellaneous commands
 ###-----------------------------------------------------------------------------
-.PHONY: boot-clean
-boot-clean: clean
-	@rm -rf $(U2_C_DIR) $(WORD_LENGTH)bit/$(U2_C_DIR)
-
 .PHONY: clean
 clean:
 	@rm -f $(U2_C_DIR)/lib*.i
 	@rm -rf $(ARCH_DIR) $(WORD_LENGTH)bit/$(ARCH_DIR)
-
-.PHONY: distclean
-distclean: clean
 	@rm -rf platforms 64bit/platforms 32bit/platforms
 
 ###-----------------------------------------------------------------------------

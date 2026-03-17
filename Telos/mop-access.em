@@ -58,15 +58,15 @@
   ((cl <class>) effective-slotds inherited-slotds)
   ;; If inheriting a sd, assume its reader & writer are OK.
   (do1-list (lambda (sd)
-              (if (member-list (slot-reader sd)
+              (if (member-list (slot-slot-reader sd)
                                (car inherited-slotds)
-                               (lambda (x y) (eq x (slot-reader y)))) ()
+                               (lambda (x y) (eq x (slot-slot-reader y)))) ()
                 (let ((reader (compute-slot-reader cl sd effective-slotds))
                       (writer (compute-slot-writer cl sd effective-slotds)))
-                  ((setter slot-reader) sd reader)
-                  ((setter slot-writer) sd writer)))
-              (ensure-slot-reader cl sd effective-slotds (slot-reader sd))
-              (ensure-slot-writer cl sd effective-slotds (slot-writer sd)))
+                  ((setter slot-slot-reader) sd reader)
+                  ((setter slot-slot-writer) sd writer)))
+              (ensure-slot-reader cl sd effective-slotds (slot-slot-reader sd))
+              (ensure-slot-writer cl sd effective-slotds (slot-slot-writer sd)))
             effective-slotds)
   effective-slotds)
 
@@ -151,10 +151,10 @@
 (defmethod compute-primitive-reader-using-class
   ((cl <class>) (slotd <slot>) effective-slotds)
   ;; Search on readers rather than names
-  (let ((reader (slot-reader slotd)))
+  (let ((reader (slot-slot-reader slotd)))
     (labels
      ((loop (n slots)
-            (if (eq reader (slot-reader (car slots)))
+            (if (eq reader (slot-slot-reader (car slots)))
                 n
               (loop (+ n 1) (cdr slots)))))
      (let ((i (loop 0 effective-slotds)))
@@ -197,10 +197,10 @@
 (defmethod compute-primitive-writer-using-class
   ((cl <class>) (slotd <slot>) effective-slotds)
   ;; Search on reader, rather than slot name.
-  (let ((reader (slot-reader slotd)))
+  (let ((reader (slot-slot-reader slotd)))
     (labels
      ((loop (n slots)
-            (if (eq reader (slot-reader (car slots)))
+            (if (eq reader (slot-slot-reader (car slots)))
                 n
               (loop (+ n 1) (cdr slots)))))
      (let ((i (loop 0 effective-slotds)))
@@ -226,7 +226,7 @@
         (format s "\nInstance ~a of class #<~a>" x (class-name cl))
         (do1-list (lambda (slot)
                     (let ((name (slot-name slot))
-                          (value ((slot-reader slot) x)))
+                          (value ((slot-slot-reader slot) x)))
                       (format s "\n  ~a = ~a" name value)))
                   (class-slots cl))
         (format s "\n"))

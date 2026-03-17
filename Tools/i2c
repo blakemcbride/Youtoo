@@ -32,8 +32,8 @@ fi
 
 FILE=Vm/level-1i.c
 FILE_SKL=Vm/level-1i.skl.c
-SOURCE=../Lib.${ARCH}/u2/liblevel-1.i
-SOURCE_MATH=../Lib.${ARCH}/u2/libmath.i
+SOURCE=Lib.${ARCH}/u2/liblevel-1.i
+SOURCE_MATH=Lib.${ARCH}/u2/libmath.i
 SOURCE_EULYSSES_1=Comptime2/u2/i-param.i
 SOURCE_EULYSSES_2=Comptime2/u2/p-env.i
 SOURCE_EULYSSES_3=Comptime2/u2/i-compile.i

@@ -130,7 +130,7 @@ void initialize_module_symbol()
   eul_allocate_bytevector( G0010806,G0010805);
   eul_allocate_bytevector( G0010808,G0010807);
   eul_allocate_bytevector( G0010810,G0010809);
-  eul_intern_symbol(sym_10813,"namep");
+  eul_intern_symbol(sym_10813,"name?");
   eul_intern_symbol(sym_10814,"(method initialize)");
   eul_intern_symbol(sym_10815,"(method namep)");
   eul_intern_symbol(sym_10816,"(method binary<)");

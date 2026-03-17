@@ -142,16 +142,16 @@ void initialize_module_collect()
   object_class(cons_1580) = eul_static_cons_class;
   eul_car(cons_1580) = key_1581;
   eul_intern_symbol(sym_1584,"name");
-  eul_intern_symbol(sym_1585,"collectionp");
+  eul_intern_symbol(sym_1585,"collection?");
   eul_intern_symbol(sym_1586,"sequence?");
-  eul_intern_symbol(sym_1587,"emptyp");
+  eul_intern_symbol(sym_1587,"empty?");
   eul_intern_symbol(sym_1588,"accumulate");
   eul_intern_symbol(sym_1589,"accumulate1");
   eul_intern_symbol(sym_1590,"any?");
   eul_intern_symbol(sym_1591,"all?");
   eul_intern_symbol(sym_1592,"do");
   eul_intern_symbol(sym_1593,"fill");
-  eul_intern_symbol(sym_1594,"find");
+  eul_intern_symbol(sym_1594,"find-key");
   eul_intern_symbol(sym_1595,"map");
   eul_intern_symbol(sym_1596,"member");
   eul_intern_symbol(sym_1597,"select");
@@ -171,7 +171,7 @@ void initialize_module_collect()
   eul_intern_symbol(sym_1611,"(method any?)");
   eul_intern_symbol(sym_1612,"(method all?)");
   eul_intern_symbol(sym_1613,"(method fill)");
-  eul_intern_symbol(sym_1614,"(method find)");
+  eul_intern_symbol(sym_1614,"(method find-key)");
   eul_intern_symbol(sym_1616,"setter");
   object_class(cons_1617) = eul_static_cons_class;
   eul_car(cons_1617) = sym_1598;

@@ -22,7 +22,7 @@ extern LispRef mop_class_bindings[];
 #define class_abstract__X63_fn_index 85 
 #define _class__X60_X62_fn_index 86 
 #define _name__X60_X62_fn_index 39 
-#define slot_reader_fn_index 38 
+#define slot_slot_reader_fn_index 38
 #define class_instance_length_fn_index 84 
 #define sd_slots_fn_index 36 
 #define generic_function_method_lookup_function_fn_index 37 
@@ -76,8 +76,8 @@ extern LispRef mop_class_bindings[];
 #define class_name_fn_index 14 
 #define converter_fn_index 13 
 #define generic_function_method_keywords_fn_index 10 
-#define slot_writer_fn_index 61 
-#define slot_default_fn_index 9 
+#define slot_slot_writer_fn_index 61
+#define slot_default_function_fn_index 9
 #define slot_required__X63_fn_index 8 
 #define class_precedence_list_fn_index 6 
 #define _slot__X60_X62_fn_index 57 

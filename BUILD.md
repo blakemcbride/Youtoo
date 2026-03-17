@@ -50,9 +50,8 @@ Environment variables you can set before running `configure`:
 | `make static` | Build with static libraries (default) |
 | `make shared` | Build with shared/dynamic libraries |
 | `make test` | Run the test suite (test1–test4) |
-| `make clean` | Remove object files |
-| `make boot-clean` | Clean bootstrap artifacts |
-| `make distclean` | Full clean including all generated files |
+| `make clean` | Remove all build artifacts (keeps `Bin.*`, `Lib.*`, `.eulrc.*`) |
+| `make realclean` | Full clean including installed binaries and libraries |
 | `make all` | Build both 32-bit and 64-bit (on 64-bit machine) |
 | `make boot` | Bootstrap the compiler (requires pre-existing `youtoo`) |
 
@@ -116,7 +115,7 @@ This requires a **pre-existing working `youtoo`** at
 `$(EUL_BOOT_DIR)/Bin.$(ARCH)/youtoo.sh`.
 
 ```bash
-make boot-clean    # always clean first
+make clean         # always clean first
 make boot          # two-stage bootstrap
 ```
 
@@ -128,7 +127,7 @@ Bootstrap process:
 5. Recompiles everything with the preliminary compiler
 6. Links the final executable
 
-**Note:** `make boot-clean` before every `make boot` is recommended — the
+**Note:** `make clean` before every `make boot` is recommended — the
 dependency analysis does not catch all module interactions.
 
 ## Compiler Usage

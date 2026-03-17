@@ -51,8 +51,8 @@
            sprint
            print
            sprint-one-char
-           sprint-char
-           print-char
+           sprin-char
+           prin-char
            nl
            *int-size-in-decimal-digits*
            *double-size-in-decimal-digits*
@@ -285,14 +285,14 @@
 ;;;------------------------------------------------------------------------
 ;;; Some low level functions to get things printed on <file-stream>s
 ;;;------------------------------------------------------------------------
-(defun sprint-char (stream char . times)
+(defun sprin-char (stream char . times)
   (if times
-      (sprint-char* stream char (car times))
+      (sprin-char* stream char (car times))
     (sprint-one-char stream char)))
 
-(defun print-char (char . times)
+(defun prin-char (char . times)
   (if times
-      (sprint-char* stdout char (car times))
+      (sprin-char* stdout char (car times))
     (sprint-one-char stdout char)))
 
 (defun sprint-one-char (stream char)
@@ -307,7 +307,7 @@
         (flush-buffer stream)
       ())))
 
-(defun sprint-char* (stream char times)
+(defun sprin-char* (stream char times)
   (let* ((scb (stream-sink stream))
          (bufsiz (control-block-buffer-size scb)))
     (labels

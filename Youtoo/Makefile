@@ -78,16 +78,9 @@ $(EUL_LIB_DIR)/%.o : %.c
 ###-----------------------------------------------------------------------------
 ### Miscellaneous commands
 ###-----------------------------------------------------------------------------
-.PHONY: boot-clean
-boot-clean:
-	@rm -rf $(ARCH_DIR)
-
 .PHONY: clean
 clean:
-
-.PHONY: distclean
-distclean: clean
-	@rm -rf platforms
+	@rm -rf $(ARCH_DIR) platforms
 	@rm -f $(U2_APPL_O) $(FAKE_GC_O)
 
 ###-----------------------------------------------------------------------------

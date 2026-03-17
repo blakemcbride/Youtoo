@@ -179,7 +179,7 @@
 ;;;-----------------------------------------------------------------------------
 ;;; Predicates
 ;;;-----------------------------------------------------------------------------
-(defmethod emptyp ((tab <table>)) (table-empty? tab))
+(defmethod empty? ((tab <table>)) (table-empty? tab))
 
 (defun table-empty? (tab) (fpi-binary= (table-size tab) 0))
 ;;(declare-inline table-empty?)

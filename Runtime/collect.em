@@ -31,7 +31,7 @@
    export (name
            <collection>
            <sequence>
-           collectionp
+           collection?
            sequence?
            accumulate
            accumulate1
@@ -39,7 +39,7 @@
            all?
            do
            fill
-           find
+           find-key
            map
            member
            select
@@ -47,7 +47,7 @@
            delete
            remove
            reset
-           emptyp
+           empty?
            size
            reverse
            sort
@@ -78,7 +78,7 @@
 ;;; Predicates
 ;;    Return t (not x when generated) in positive case
 ;;;-----------------------------------------------------------------------------
-(defgeneric collectionp (x)
+(defgeneric collection? (x)
   method: (((x <object>)) ())
   method: (((x <collection>)) t))
 
@@ -86,7 +86,7 @@
   method: (((x <object>)) ())
   method: (((x <sequence>)) t))
 
-(defgeneric emptyp (o))
+(defgeneric empty? (o))
 
 (defmethod binary= ((c1 <collection>) (c2 <collection>))
   (and (eq (class-of c1) (class-of c2))
@@ -106,7 +106,7 @@
 (defgeneric all? (f c . cs))
 (defgeneric do (f c . cs))
 (defgeneric fill (c x . keys))
-(defgeneric find (v c . f))
+(defgeneric find-key (c f . rest))
 (defgeneric map (f c . cs))
 (defgeneric member (v c . f))
 (defgeneric select (f c . cs))
@@ -135,8 +135,20 @@
 (defmethod fill ((c <collection>) x . keys)
   (error () "fill not yet implemented"))
 
-(defmethod find (x (c <collection>) . preds)
-  (apply member x c preds))
+(defmethod find-key ((c <collection>) (test <function>) . rest)
+  (let ((skip (if (null? rest) 0 (car rest)))
+        (failure (if (or (null? rest) (null? (cdr rest))) () (cadr rest)))
+        (n (size c)))
+    (labels
+     ((loop (i skipped)
+            (if (fpi-binary< i n)
+                (if (test (element c i))
+                    (if (fpi-binary< skipped skip)
+                        (loop (fpi-binary+ i 1) (fpi-binary+ skipped 1))
+                      i)
+                  (loop (fpi-binary+ i 1) skipped))
+              failure)))
+     (loop 0 0))))
 
 ;;;-----------------------------------------------------------------------------
 ;;; Access

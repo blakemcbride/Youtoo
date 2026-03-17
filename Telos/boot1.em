@@ -34,8 +34,7 @@
            character?
            symbol?
            cons?
-           fpi?
-           fpi?
+           int?
            list?
            atom?
            null?
@@ -136,8 +135,8 @@
 (defun cons? (x) ((opencoded-lambda (u) (consp)) x))
 (declare-inline cons?)
 
-(defun fpi? (x) ((opencoded-lambda (u) (fpip)) x))
-(declare-inline fpi?)
+(defun int? (x) ((opencoded-lambda (u) (fpip)) x))
+(declare-inline int?)
 
 (defun simple-function? (x) ((opencoded-lambda (u) (lambdap)) x))
 (declare-inline simple-function?)

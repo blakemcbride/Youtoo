@@ -9,7 +9,7 @@ extern LispRef vector_bindings[];
 
 /* Module binding indices */
 #define map1_vector_fn_index 15 
-#define maximum_vector_size_fn_index 14 
+#define maximum_vector_index_fn_index 14
 #define do1_vector_fn_index 16 
 #define vector_append_fn_index 8 
 #define vector_empty__X63_fn_index 19 

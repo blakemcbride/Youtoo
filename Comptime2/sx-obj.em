@@ -121,7 +121,7 @@
          (slot (member-list 'binding slots
                             (lambda (name descr)
                               (eq name (slot-name descr)))))
-         (writer (and slot (slot-writer (car slot)))))
+         (writer (and slot (slot-slot-writer (car slot)))))
     (writer obj value)))
 
 ;;;-----------------------------------------------------------------------------

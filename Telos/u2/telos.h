@@ -78,7 +78,7 @@ extern LispRef telos_bindings[];
 #define generic_function_discriminating_function_fn_index 41 
 #define cons__X63_fn_index 44 
 #define method_slot_defaults_fn_index 40 
-#define slot_reader_fn_index 38 
+#define slot_slot_reader_fn_index 38
 #define filter_keywords_fn_index 3 
 #define make_vector_fn_index 40 
 #define primitive_prin_fn_index 38 
@@ -118,7 +118,7 @@ extern LispRef telos_bindings[];
 #define object_size_fn_index 12 
 #define converter_fn_index 13 
 #define generic_function_method_keywords_fn_index 10 
-#define slot_default_fn_index 9 
+#define slot_default_function_fn_index 9
 #define string_size_fn_index 18 
 #define substring1_fn_index 53 
 #define slot_required__X63_fn_index 8 
@@ -164,7 +164,7 @@ extern LispRef telos_bindings[];
 #define eq_fn_index 22 
 #define method_generic_function_fn_index 62 
 #define gf_keywords_fn_index 64 
-#define slot_writer_fn_index 61 
+#define slot_slot_writer_fn_index 61
 #define string__X63_fn_index 17 
 #define list_size_fn_index 19 
 #define primitive_find_slot_position_fn_index 7 

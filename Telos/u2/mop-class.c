@@ -58,7 +58,7 @@ void initialize_module_mop_class()
   /* Byte-vector with size: 2 is_init: 0 index: 95 binding: (setter-slot-required?) */
   static const void *G00990[] = {I(ab,1c,8a,05),I(1d,03,45,02)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 96 binding: (setter-slot-default) */
+  /* Byte-vector with size: 2 is_init: 0 index: 96 binding: (setter-slot-default-function) */
   static const void *G00992[] = {I(ab,1c,8a,04),I(1d,03,45,02)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 97 binding: (setter-slot-keyword) */
@@ -67,10 +67,10 @@ void initialize_module_mop_class()
   /* Byte-vector with size: 2 is_init: 0 index: 98 binding: (setter-slot-name) */
   static const void *G00996[] = {I(ab,1c,84,1d),I(03,45,02,00)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 99 binding: (setter-slot-writer) */
+  /* Byte-vector with size: 2 is_init: 0 index: 99 binding: (setter-slot-slot-writer) */
   static const void *G00998[] = {I(ab,1c,83,1d),I(03,45,02,00)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 100 binding: (setter-slot-reader) */
+  /* Byte-vector with size: 2 is_init: 0 index: 100 binding: (setter-slot-slot-reader) */
   static const void *G001000[] = {I(ab,1c,82,1d),I(03,45,02,00)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 101 binding: (setter-method-function) */
@@ -231,7 +231,7 @@ void initialize_module_mop_class()
   /* Byte-vector with size: 2 is_init: 0 index: 231 binding: slot-required? */
   static const void *G001206[] = {I(aa,8a,05,02),I(45,00,00,00)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 232 binding: slot-default */
+  /* Byte-vector with size: 2 is_init: 0 index: 232 binding: slot-default-function */
   static const void *G001208[] = {I(aa,8a,04,02),I(45,00,00,00)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 233 binding: generic-function-method-keywords */
@@ -253,7 +253,7 @@ void initialize_module_mop_class()
   /* Byte-vector with size: 2 is_init: 0 index: 239 binding: generic-function-method-lookup-function */
   static const void *G001221[] = {I(aa,8a,06,02),I(45,00,00,00)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 240 binding: slot-reader */
+  /* Byte-vector with size: 2 is_init: 0 index: 240 binding: slot-slot-reader */
   static const void *G001223[] = {I(aa,82,02,45),I(00,00,00,00)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 241 binding: generic-function-discriminating-function */
@@ -274,7 +274,7 @@ void initialize_module_mop_class()
   /* Byte-vector with size: 2 is_init: 0 index: 246 binding: class-slots */
   static const void *G001235[] = {I(aa,8a,04,02),I(45,00,00,00)};
 
-  /* Byte-vector with size: 2 is_init: 0 index: 247 binding: slot-writer */
+  /* Byte-vector with size: 2 is_init: 0 index: 247 binding: slot-slot-writer */
   static const void *G001237[] = {I(aa,83,02,45),I(00,00,00,00)};
 
   /* Byte-vector with size: 2 is_init: 0 index: 248 binding: method-generic-function */
@@ -572,11 +572,11 @@ void initialize_module_mop_class()
   eul_intern_symbol(sym_1193,"(setter method-generic-function)");
   eul_intern_symbol(sym_1194,"(setter method-domain)");
   eul_intern_symbol(sym_1195,"(setter method-function)");
-  eul_intern_symbol(sym_1196,"(setter slot-reader)");
-  eul_intern_symbol(sym_1197,"(setter slot-writer)");
+  eul_intern_symbol(sym_1196,"(setter slot-slot-reader)");
+  eul_intern_symbol(sym_1197,"(setter slot-slot-writer)");
   eul_intern_symbol(sym_1198,"(setter slot-name)");
   eul_intern_symbol(sym_1199,"(setter slot-keyword)");
-  eul_intern_symbol(sym_1200,"(setter slot-default)");
+  eul_intern_symbol(sym_1200,"(setter slot-default-function)");
   eul_intern_symbol(sym_1201,"(setter slot-required?)");
   eul_allocate_bytevector( G001062,G001061);
   eul_allocate_bytevector( G001203,G001202);
@@ -628,20 +628,20 @@ void initialize_module_mop_class()
   eul_intern_symbol(sym_1283,"method-domain");
   eul_intern_symbol(sym_1284,"generic-function-method-cache");
   eul_intern_symbol(sym_1285,"method-generic-function");
-  eul_intern_symbol(sym_1286,"slot-writer");
+  eul_intern_symbol(sym_1286,"slot-slot-writer");
   eul_intern_symbol(sym_1287,"class-slots");
   eul_intern_symbol(sym_1288,"generic-function-method-class");
   eul_intern_symbol(sym_1289,"simple-function-environment");
   eul_intern_symbol(sym_1290,"generic-function-methods");
   eul_intern_symbol(sym_1291,"*default-slot-value*");
   eul_intern_symbol(sym_1292,"generic-function-discriminating-function");
-  eul_intern_symbol(sym_1293,"slot-reader");
+  eul_intern_symbol(sym_1293,"slot-slot-reader");
   eul_intern_symbol(sym_1294,"generic-function-method-lookup-function");
   eul_intern_symbol(sym_1295,"class-code");
   eul_intern_symbol(sym_1296,"function-domain");
   eul_intern_symbol(sym_1297,"class-name");
   eul_intern_symbol(sym_1298,"generic-function-method-keywords");
-  eul_intern_symbol(sym_1299,"slot-default");
+  eul_intern_symbol(sym_1299,"slot-default-function");
   eul_intern_symbol(sym_1300,"slot-required?");
   eul_intern_symbol(sym_1301,"keyword-name");
   eul_intern_symbol(sym_1302,"top-level");

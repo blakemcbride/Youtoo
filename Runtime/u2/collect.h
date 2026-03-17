@@ -22,7 +22,7 @@ extern LispRef collect_bindings[];
 #define any__X63_fn_index 24 
 #define reset_fn_index 18 
 #define accumulate_fn_index 23 
-#define find_fn_index 14 
+#define find_key_fn_index 14
 #define _collection__X60_X62_fn_index 22 
 #define collectionp_fn_index 21 
 #define _sequence__X60_X62_fn_index 7 

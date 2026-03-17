@@ -73,7 +73,7 @@
 (defun string-empty? (str) (fpi-binary= (string-size str) 0))
 (declare-inline string-empty?)
 
-(defmethod emptyp ((str <string>)) (string-empty? str))
+(defmethod empty? ((str <string>)) (string-empty? str))
 
 (defun string-equal (str1 str2)
   (fpi-binary= (string-compare str1 str2) 0))

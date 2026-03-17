@@ -38,7 +38,7 @@
            vector?
            make-vector
            vector-size
-           maximum-vector-size
+           maximum-vector-index
            vector-ref
            subvector
            vector-append
@@ -73,7 +73,7 @@
 (defun vector-empty? (vec) (fpi-binary= (vector-size vec) 0))
 (declare-inline vector-empty?)
 
-(defmethod emptyp ((vec <vector>)) (vector-empty? vec))
+(defmethod empty? ((vec <vector>)) (vector-empty? vec))
 
 ;;;-----------------------------------------------------------------------------
 ;;; Iteration
@@ -429,7 +429,7 @@
 ;;;-----------------------------------------------------------------------------
 ;;; Limit (2^29 - 1)
 ;;;-----------------------------------------------------------------------------
-(defconstant maximum-vector-size 536870911)
+(defconstant maximum-vector-index 536870911)
 
 ;;;-----------------------------------------------------------------------------
 )  ;; End of module vector

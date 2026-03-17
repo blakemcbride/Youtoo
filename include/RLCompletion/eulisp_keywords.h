@@ -417,7 +417,7 @@ char *eulisp_keywords[] =
     "add-method",
     "slot-name",
     "slot-keyword",
-    "slot-default",
+    "slot-default-function",
     "slot-required?",
 
 ///-----------------------------------------------------------------------------

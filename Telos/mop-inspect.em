@@ -32,12 +32,12 @@
    syntax (_boot0)
    export (subclass?
            function?
-           methodp
+           method?
            generic-function?
            cpl-subclass?
            class?
            class-of
-           slotp
+           slot?
            primitive-metaclass?
            primitive-find-slot-position
            primitive-slot-value))
@@ -87,17 +87,17 @@
   (if (subclass? (class-of a) <class>) a ()))
 ;;(declare-inline class?)
 
-(defun slotp (a)
+(defun slot? (a)
   (if (subclass? (class-of a) <slot>) a ()))
-;;(declare-inline slotp)
+;;(declare-inline slot?)
 
 (defun generic-function? (a)
   (if (subclass? (class-of a) <generic-function>) a ()))
 ;;(declare-inline generic-function?)
 
-(defun methodp (a)
+(defun method? (a)
   (if (subclass? (class-of a) <method>) a ()))
-;;(declare-inline methodp)
+;;(declare-inline method?)
 
 (defun function? (a)
   (if (subclass? (class-of a) <function>) a ()))

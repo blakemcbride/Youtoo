@@ -67,14 +67,9 @@ $(EUL_BIN_DIR)/i2doc: $(I2DOC_EM) $(ARCH_DIR)/i2doc-ext.o | $(ARCH_DIR)/.
 ###-----------------------------------------------------------------------------
 ### Miscellaneous commands
 ###-----------------------------------------------------------------------------
-.PHONY: boot-clean
-boot-clean: clean
-
+.PHONY: clean
 clean:
-	@rm -rf $(ARCH_DIR)
-
-distclean: clean
-	@rm -rf platforms $(U2_C_DIR)
+	@rm -rf $(ARCH_DIR) platforms $(U2_C_DIR)
 	@rm -f $(EUL_BIN_DIR)/b2h $(EUL_BIN_DIR)/i2doc
 
 ###-----------------------------------------------------------------------------

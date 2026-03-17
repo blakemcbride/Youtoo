@@ -56,10 +56,6 @@ test: $(TESTS_EXE)
 ###-----------------------------------------------------------------------------
 .PHONY: clean
 clean:
-	@rm -rf $(ARCH_DIR)
-
-.PHONY: distclean
-distclean: clean
-	@rm -rf platforms $(U2_C_DIR)
+	@rm -rf $(ARCH_DIR) platforms $(U2_C_DIR)
 
 ###-----------------------------------------------------------------------------

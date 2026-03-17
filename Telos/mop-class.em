@@ -112,11 +112,11 @@
            method-generic-function
            method-domain
            method-function
-           slot-reader
-           slot-writer
+           slot-slot-reader
+           slot-slot-writer
            slot-keyword
            slot-name
-           slot-default
+           slot-default-function
            slot-required?
            symbol-name
            keyword-name))
@@ -414,16 +414,16 @@
 (defconstant sd-slot-defaults
   (list *default-slot-value* *default-slot-value*))
 
-(defun slot-reader (sd) (primitive-ref sd 0))
-(declare-inline slot-reader)
+(defun slot-slot-reader (sd) (primitive-ref sd 0))
+(declare-inline slot-slot-reader)
 
-(defun (setter slot-reader) (sd val)
+(defun (setter slot-slot-reader) (sd val)
   ((setter primitive-ref) sd 0 val))
 
-(defun slot-writer (sd) (primitive-ref sd 1))
-(declare-inline slot-writer)
+(defun slot-slot-writer (sd) (primitive-ref sd 1))
+(declare-inline slot-slot-writer)
 
-(defun (setter slot-writer) (sd val)
+(defun (setter slot-slot-writer) (sd val)
   ((setter primitive-ref) sd 1 val))
 
 ;;;-----------------------------------------------------------------------------
@@ -456,10 +456,10 @@
 (defun (setter slot-keyword) (sd val)
   ((setter primitive-ref) sd 3 val))
 
-(defun slot-default (sd) (primitive-ref sd 4))
-(declare-inline slot-default)
+(defun slot-default-function (sd) (primitive-ref sd 4))
+(declare-inline slot-default-function)
 
-(defun (setter slot-default) (sd val)
+(defun (setter slot-default-function) (sd val)
   ((setter primitive-ref) sd 4 val))
 
 (defun slot-required? (sd) (primitive-ref sd 5))

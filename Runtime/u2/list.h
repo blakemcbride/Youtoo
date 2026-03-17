@@ -49,7 +49,7 @@ extern LispRef list_bindings[];
 #define cddaar_fn_index 27 
 #define cadr_fn_index 30 
 #define cddar_fn_index 9 
-#define find1_list_fn_index 8 
+#define find_key_list_fn_index 8
 #define cadaar_fn_index 7 
 #define list_size_fn_index 19 
 #define cdaaar_fn_index 4 

@@ -44,7 +44,7 @@
     "const char *" "int" "void *" "int *" "double *" "char **"))
 
 (defun arg-converter-index (x)
-  (or (find x *argument-converters*)
+  (or (find-key *argument-converters* (lambda (e) (eql x e)))
       (ct-serious-warning 0 "bad defextern argument converter ~a" x)))
 
 (defun arg-converter-as-C-type (i)
@@ -62,7 +62,7 @@
     "int *" "double *" "char ** "void *""))
 
 (defun res-converter-index (x)
-  (or (find x *result-converters*)
+  (or (find-key *result-converters* (lambda (e) (eql x e)))
       (ct-serious-warning 0 "bad defextern result converter ~a" x)))
 (defun res-converter-as-C-type (i)
   (vector-ref *result-converter-C-types* i))

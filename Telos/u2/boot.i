@@ -40,7 +40,7 @@
     ((name . warning) (pos . 25) (origin boot . warning))
     ((name . anyp2-list) (pos . 12) (origin boot . anyp2-list))
     ((name . *) (pos . 35) (origin boot1 . *) (inline (G0064 (fpi-product))))
-    ((name . fpi?) (pos . 34) (origin boot1 . fpi?) (inline (G0049 (fpip))))
+    ((name . int?) (pos . 34) (origin boot1 . int?) (inline (G0049 (fpip))))
     ((name . character?) (pos . 33) (origin boot1 . character?) (inline (G0041 (characterp))))
     ((name . append!) (pos . 23) (origin boot . append!))
     ((name . %) (pos . 32) (origin boot1 . %) (inline (G0068 (fpi-remainder))))

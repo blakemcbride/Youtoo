@@ -835,7 +835,7 @@
                       ((eq c #\_)
                        ((setter string-ref) new-str i #\_)
                        (loop (+ i 1) post-str))
-                      ((null? (alnump c))
+                      ((null? (alnum? c))
                        ((setter string-ref) new-str i #\_)
                        (loop (+ i 1)
                              (fmt "~a_X~a" post-str

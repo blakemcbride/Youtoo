@@ -57,11 +57,11 @@
 ;;;-----------------------------------------------------------------------------
 (defgeneric slot-value-using-slot ((sd <slot>) obj))
 (defmethod slot-value-using-slot ((sd <slot>) obj)
-  ((slot-reader sd) obj))
+  ((slot-slot-reader sd) obj))
 
 (defgeneric (setter slot-value-using-slot) ((sd <slot>) obj val))
 (defmethod (setter slot-value-using-slot) ((sd <slot>) obj val)
-  ((setter (slot-reader sd)) obj val))
+  ((setter (slot-slot-reader sd)) obj val))
 
 (defun find-slot (cl name)
   (labels
@@ -185,9 +185,9 @@
     ((setter slot-name) sd name)
     ((setter slot-keyword) sd (make-keyword (symbol-name name)))
     ((setter slot-required?) sd (eq default required:))
-    ((setter slot-default) sd default)
-    ((setter slot-reader) sd (predefined-reader i))
-    ((setter slot-writer) sd (predefined-writer i))
+    ((setter slot-default-function) sd default)
+    ((setter slot-slot-reader) sd (predefined-reader i))
+    ((setter slot-slot-writer) sd (predefined-writer i))
     sd))
 
 (defun make-slotds (names defaults . offset)
@@ -219,8 +219,8 @@
 ;; simple function code. The object size does NOT reflect the size of the
 ;; object, but the size of the code string (similar to strings).
 (let ((slot (find-slot <simple-function> 'code)))
-  ((setter slot-reader) slot simple-function-code)
-  ((setter slot-writer) slot (setter simple-function-code)))
+  ((setter slot-slot-reader) slot simple-function-code)
+  ((setter slot-slot-writer) slot (setter simple-function-code)))
 
 (let ((method-slotds (make-slotds method-slots method-slot-defaults)))
   ((setter class-slots) <method> method-slotds)

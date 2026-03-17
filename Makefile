@@ -97,32 +97,19 @@ test:
 	@$(MAKE) -C Test test
 	@echo "DONE"
 
-.PHONY: boot-clean
-boot-clean:
-	@echo "BOOT-CLEANING youtoo modules ..."
-	@$(call makeAll,$(SYS_DIRS),$@)
-	@rm -f $(EUL_LIB_DIR)/*.[aio]
-	@echo "DONE"
-
 .PHONY: clean
 clean:
 	@echo "CLEANING youtoo ..."
-	@$(call makeAll,$(SYS_DIRS),$@)
-	@$(MAKE) -C Test $@
-	@echo "DONE"
-
-.PHONY: gitclean
-gitclean:
-	@echo "GIT-CLEANING youtoo ..."
+	@$(call makeAll,$(SYS_DIRS),clean)
 	@$(MAKE) -C Tools clean
 	@$(MAKE) -C Test clean
+	@rm -rf Modules
+	@rm -f Runtime/u2/level-0_.c Runtime/u2/level-1_.c
 	@echo "DONE"
 
-.PHONY: distclean
-distclean: clean
-	@echo "DIST-CLEANING youtoo ..."
-	@$(call makeAll,$(SYS_DIRS),$@)
-	@$(MAKE) -C Test $@
+.PHONY: realclean
+realclean: clean
+	@echo "REAL-CLEANING youtoo ..."
 	@rm -rf Bin.* Lib.* .eulrc.*
 	@echo "DONE"
 

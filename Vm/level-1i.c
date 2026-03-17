@@ -142,12 +142,12 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"warning", make_entry(25, "boot", "warning"));
   eul_fast_table_set(level_1_tab,"<collection>", make_entry(22, "collect", "<collection>"));
   eul_fast_table_set(level_1_tab,"from-stream", make_entry(47, "stream2", "from-stream"));
-  eul_fast_table_set(level_1_tab,"fpi?", make_entry(34, "boot1", "fpi?"));
+  eul_fast_table_set(level_1_tab,"int?", make_entry(34, "boot1", "int?"));
   eul_fast_table_set(level_1_tab,"compute-discriminating-function", make_entry(12, "mop-meth", "compute-discriminating-function"));
   eul_fast_table_set(level_1_tab,"simple-function-code", make_entry(76, "mop-class", "simple-function-code"));
   eul_fast_table_set(level_1_tab,"permute", make_entry(18, "vector", "permute"));
   eul_fast_table_set(level_1_tab,"generic-connect", make_entry(45, "stream2", "generic-connect"));
-  eul_fast_table_set(level_1_tab,"slotp", make_entry(13, "mop-inspect", "slotp"));
+  eul_fast_table_set(level_1_tab,"slot?", make_entry(13, "mop-inspect", "slot?"));
   eul_fast_table_set(level_1_tab,"parse", make_entry(28, "read", "parse"));
   eul_fast_table_set(level_1_tab,"element", make_entry(20, "collect", "element"));
   eul_fast_table_set(level_1_tab,"read-token", make_entry(27, "read", "read-token"));
@@ -215,7 +215,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"<method>", make_entry(25, "mop-class", "<method>"));
   eul_fast_table_set(level_1_tab,"do1-table", make_entry(9, "table", "do1-table"));
   eul_fast_table_set(level_1_tab,"control-block-mode", make_entry(29, "stream2", "control-block-mode"));
-  eul_fast_table_set(level_1_tab,"alnump", make_entry(8, "character", "alnump"));
+  eul_fast_table_set(level_1_tab,"alnum?", make_entry(8, "character", "alnum?"));
   eul_fast_table_set(level_1_tab,"do1-vector", make_entry(16, "vector", "do1-vector"));
   eul_fast_table_set(level_1_tab,"primitive-print", make_entry(3, "boot1", "print"));
   eul_fast_table_set(level_1_tab,"output-condition-contents", make_entry(4, "condition", "output-condition-contents"));
@@ -229,7 +229,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"exit", make_entry(20, "boot1", "exit"));
   eul_fast_table_set(level_1_tab,"fpi-binary-", make_entry(16, "boot1", "-"));
   eul_fast_table_set(level_1_tab,"add-method", make_entry(8, "mop-meth", "add-method"));
-  eul_fast_table_set(level_1_tab,"slot-default", make_entry(9, "mop-class", "slot-default"));
+  eul_fast_table_set(level_1_tab,"slot-default-function", make_entry(9, "mop-class", "slot-default-function"));
   eul_fast_table_set(level_1_tab,"<double-float>", make_entry(8, "float", "<double-float>"));
   eul_fast_table_set(level_1_tab,"slot-required?", make_entry(8, "mop-class", "slot-required?"));
   eul_fast_table_set(level_1_tab,"to-stream", make_entry(27, "stream2", "to-stream"));
@@ -246,7 +246,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"lock", make_entry(3, "lock", "lock"));
   eul_fast_table_set(level_1_tab,"system", make_entry(51, "boot1", "system"));
   eul_fast_table_set(level_1_tab,"do2-list", make_entry(22, "list", "do2-list"));
-  eul_fast_table_set(level_1_tab,"maximum-vector-size", make_entry(14, "vector", "maximum-vector-size"));
+  eul_fast_table_set(level_1_tab,"maximum-vector-index", make_entry(14, "vector", "maximum-vector-index"));
   eul_fast_table_set(level_1_tab,"*backtrace-nframes*", make_entry(34, "boot", "*backtrace-nframes*"));
   eul_fast_table_set(level_1_tab,"*min-table-entries*", make_entry(17, "table1", "*min-table-entries*"));
   eul_fast_table_set(level_1_tab,"thread-dynamic-variables", make_entry(27, "thread", "thread-dynamic-variables"));
@@ -295,7 +295,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"<buffered-stream>", make_entry(19, "stream2", "<buffered-stream>"));
   eul_fast_table_set(level_1_tab,"gf-keywords", make_entry(64, "mop-class", "gf-keywords"));
   eul_fast_table_set(level_1_tab,"<hash-table>", make_entry(13, "table1", "<hash-table>"));
-  eul_fast_table_set(level_1_tab,"slot-writer", make_entry(61, "mop-class", "slot-writer"));
+  eul_fast_table_set(level_1_tab,"slot-slot-writer", make_entry(61, "mop-class", "slot-slot-writer"));
   eul_fast_table_set(level_1_tab,"table-comparator", make_entry(12, "table1", "table-comparator"));
   eul_fast_table_set(level_1_tab,"*table-fill-factor*", make_entry(11, "table1", "*table-fill-factor*"));
   eul_fast_table_set(level_1_tab,"list-size", make_entry(19, "boot", "list-size"));
@@ -392,7 +392,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"list-drop", make_entry(3, "list", "list-drop"));
   eul_fast_table_set(level_1_tab,"=", make_entry(2, "compare", "="));
   eul_fast_table_set(level_1_tab,"thread-block", make_entry(2, "thread", "thread-block"));
-  eul_fast_table_set(level_1_tab,"emptyp", make_entry(3, "collect", "emptyp"));
+  eul_fast_table_set(level_1_tab,"empty?", make_entry(3, "collect", "empty?"));
   eul_fast_table_set(level_1_tab,"nl", make_entry(15, "stream", "nl"));
   eul_fast_table_set(level_1_tab,"subclass?", make_entry(2, "mop-inspect", "subclass?"));
   eul_fast_table_set(level_1_tab,"<handler>", make_entry(2, "handler", "<handler>"));
@@ -427,7 +427,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"accumulate", make_entry(23, "collect", "accumulate"));
   eul_fast_table_set(level_1_tab,"semaphore?", make_entry(7, "lock", "semaphore?"));
   eul_fast_table_set(level_1_tab,"*", make_entry(23, "number", "*"));
-  eul_fast_table_set(level_1_tab,"collectionp", make_entry(21, "collect", "collectionp"));
+  eul_fast_table_set(level_1_tab,"collection?", make_entry(21, "collect", "collection?"));
   eul_fast_table_set(level_1_tab,"O_TRUNC", make_entry(13, "stream1", "O_TRUNC"));
   eul_fast_table_set(level_1_tab,"append!", make_entry(23, "boot", "append!"));
   eul_fast_table_set(level_1_tab,"table-values", make_entry(9, "table1", "table-values"));
@@ -445,7 +445,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"symbol-name", make_entry(70, "mop-class", "symbol-name"));
   eul_fast_table_set(level_1_tab,"first-arithmetic-cb", make_entry(16, "callback", "first-arithmetic-cb"));
   eul_fast_table_set(level_1_tab,"sformat", make_entry(4, "format", "sformat"));
-  eul_fast_table_set(level_1_tab,"methodp", make_entry(12, "mop-inspect", "methodp"));
+  eul_fast_table_set(level_1_tab,"method?", make_entry(12, "mop-inspect", "method?"));
   eul_fast_table_set(level_1_tab,"caar", make_entry(39, "list", "caar"));
   eul_fast_table_set(level_1_tab,"slot-keyword", make_entry(69, "mop-class", "slot-keyword"));
   eul_fast_table_set(level_1_tab,"cerror", make_entry(3, "format", "cerror"));
@@ -457,7 +457,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"lispin", make_entry(13, "read", "lispin"));
   eul_fast_table_set(level_1_tab,"list-equal", make_entry(50, "boot1", "equal"));
   eul_fast_table_set(level_1_tab,"disconnect", make_entry(40, "stream2", "disconnect"));
-  eul_fast_table_set(level_1_tab,"print-char", make_entry(14, "stream", "print-char"));
+  eul_fast_table_set(level_1_tab,"prin-char", make_entry(14, "stream", "prin-char"));
   eul_fast_table_set(level_1_tab,"integer?", make_entry(4, "integer", "integer?"));
   eul_fast_table_set(level_1_tab,"min", make_entry(10, "compare", "min"));
   eul_fast_table_set(level_1_tab,"read-s-expression", make_entry(12, "read", "read-s-expression"));
@@ -488,7 +488,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"method-slot-defaults", make_entry(40, "mop-class", "method-slot-defaults"));
   eul_fast_table_set(level_1_tab,"binary=", make_entry(9, "compare", "binary="));
   eul_fast_table_set(level_1_tab,"semaphore-counter", make_entry(6, "lock", "semaphore-counter"));
-  eul_fast_table_set(level_1_tab,"slot-reader", make_entry(38, "mop-class", "slot-reader"));
+  eul_fast_table_set(level_1_tab,"slot-slot-reader", make_entry(38, "mop-class", "slot-slot-reader"));
   eul_fast_table_set(level_1_tab,"sort", make_entry(15, "collect", "sort"));
   eul_fast_table_set(level_1_tab,"socket?", make_entry(10, "socket", "socket?"));
   eul_fast_table_set(level_1_tab,"make-vector", make_entry(40, "boot1", "make-vector"));
@@ -496,7 +496,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"cdr", make_entry(36, "boot1", "cdr"));
   eul_fast_table_set(level_1_tab,"do1-string", make_entry(10, "string", "do1-string"));
   eul_fast_table_set(level_1_tab,"spprint", make_entry(8, "mop-access", "spprint"));
-  eul_fast_table_set(level_1_tab,"find", make_entry(14, "collect", "find"));
+  eul_fast_table_set(level_1_tab,"find-key", make_entry(14, "collect", "find-key"));
   eul_fast_table_set(level_1_tab,"gensym", make_entry(6, "symbol", "gensym"));
   eul_fast_table_set(level_1_tab,"shallow-copy", make_entry(2, "copy", "shallow-copy"));
   eul_fast_table_set(level_1_tab,"fmt", make_entry(2, "format", "fmt"));
@@ -505,7 +505,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"lsd-slots", make_entry(33, "mop-class", "lsd-slots"));
   eul_fast_table_set(level_1_tab,"<null>", make_entry(28, "mop-class", "<null>"));
   eul_fast_table_set(level_1_tab,"thread?", make_entry(30, "thread", "thread?"));
-  eul_fast_table_set(level_1_tab,"sprint-char", make_entry(12, "stream", "sprint-char"));
+  eul_fast_table_set(level_1_tab,"sprin-char", make_entry(12, "stream", "sprin-char"));
   eul_fast_table_set(level_1_tab,"<function-class>", make_entry(27, "mop-class", "<function-class>"));
   eul_fast_table_set(level_1_tab,"compute-class-precedence-list", make_entry(13, "mop-alloc", "compute-class-precedence-list"));
   eul_fast_table_set(level_1_tab,"caddr", make_entry(32, "list", "caddr"));
@@ -618,7 +618,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"primitive-metaclass?", make_entry(6, "mop-inspect", "primitive-metaclass?"));
   eul_fast_table_set(level_1_tab,"table?", make_entry(7, "table1", "table?"));
   eul_fast_table_set(level_1_tab,"<generic-function>", make_entry(51, "mop-class", "<generic-function>"));
-  eul_fast_table_set(level_1_tab,"alphap", make_entry(4, "character", "alphap"));
+  eul_fast_table_set(level_1_tab,"alpha?", make_entry(4, "character", "alpha?"));
   eul_fast_table_set(level_1_tab,"sf-direct-slot-defaults", make_entry(50, "mop-class", "sf-direct-slot-defaults"));
   eul_fast_table_set(level_1_tab,"generic-function-methods", make_entry(48, "mop-class", "generic-function-methods"));
   eul_fast_table_set(level_1_tab,"cons", make_entry(2, "boot1", "cons"));
@@ -665,7 +665,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"*stack-nvalues*", make_entry(10, "boot", "*stack-nvalues*"));
   eul_fast_table_set(level_1_tab,"<lock>", make_entry(2, "lock", "<lock>"));
   eul_fast_table_set(level_1_tab,"<object>", make_entry(22, "mop-class", "<object>"));
-  eul_fast_table_set(level_1_tab,"most-positive-fpi", make_entry(3, "fpi", "most-positive-fpi"));
+  eul_fast_table_set(level_1_tab,"most-positive-int", make_entry(3, "fpi", "most-positive-int"));
   eul_fast_table_set(level_1_tab,"swrite", make_entry(4, "stream", "swrite"));
   eul_fast_table_set(level_1_tab,"truncate", make_entry(2, "float", "truncate"));
   eul_fast_table_set(level_1_tab,"keyword?", make_entry(2, "symbol", "keyword?"));
@@ -706,7 +706,7 @@ void fill_level_1_table() {
   eul_fast_table_set(level_1_tab,"member1-vector", make_entry(2, "vector", "member1-vector"));
   eul_fast_table_set(level_1_tab,"<connection>", make_entry(2, "socket", "<connection>"));
   eul_fast_table_set(level_1_tab,"name-slots", make_entry(3, "mop-class", "name-slots"));
-  eul_fast_table_set(level_1_tab,"most-negative-fpi", make_entry(2, "fpi", "most-negative-fpi"));
+  eul_fast_table_set(level_1_tab,"most-negative-int", make_entry(2, "fpi", "most-negative-int"));
   eul_fast_table_set(level_1_tab,"simple-function?", make_entry(4, "boot1", "simple-function?"));
   eul_fast_table_set(level_1_tab,"<simple-function>", make_entry(2, "mop-class", "<simple-function>"));
   eul_fast_table_set(level_1_tab,"flush", make_entry(2, "stream", "flush"));

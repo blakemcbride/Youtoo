@@ -68,7 +68,7 @@
           (if (null? slots) ()
             (let* ((sd (car slots))
                    (key (slot-keyword sd))
-                   (init (slot-default sd)))
+                   (init (slot-default-function sd)))
               ((setter primitive-ref) obj i
                (if (null? key)
                    (if (function? init)
@@ -212,16 +212,16 @@
       sd
     (make sdclass             ; what of other keywords?
           name: (slot-name sd)
-          reader: (slot-reader sd)
-          writer: (slot-writer sd)
+          reader: (slot-slot-reader sd)
+          writer: (slot-slot-writer sd)
           keyword: (slot-keyword sd)
-          default: (slot-default sd))))
+          default: (slot-default-function sd))))
 
 (defun redefined-slot (cl sd sdclass spec)
   ;; Inherited and redefined
-  (let* ((reader (find-key reader: spec (slot-reader sd)))
-         (writer (find-key writer: spec (slot-writer sd)))
-         (init-fun (find-key default: spec (slot-default sd)))
+  (let* ((reader (find-key reader: spec (slot-slot-reader sd)))
+         (writer (find-key writer: spec (slot-slot-writer sd)))
+         (init-fun (find-key default: spec (slot-default-function sd)))
          (name (find-key name: spec required:))
          (keyword (find-key keyword: spec
                             (let ((ia (slot-keyword sd)))

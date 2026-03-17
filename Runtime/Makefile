@@ -184,16 +184,8 @@ endif
 ###-----------------------------------------------------------------------------
 ### Miscellaneous commands
 ###-----------------------------------------------------------------------------
-.PHONY: boot-clean
-boot-clean: clean
-	@rm -rf $(U2_C_DIR)
-
 .PHONY: clean
 clean:
-	@rm -rf $(ARCH_DIR)
-
-.PHONY: distclean
-distclean: clean
-	@rm -rf platforms
+	@rm -rf $(ARCH_DIR) platforms
 
 ###-----------------------------------------------------------------------------
