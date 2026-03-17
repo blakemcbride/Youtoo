@@ -81,4 +81,4 @@ EuLisp/       Language specification and documentation
 
 ## License
 
-GNU General Public License v2.  See [COPYING](COPYING) for details.
+GNU General Public License v2.  See [LICENSE](LICENSE) for details.
