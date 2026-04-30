@@ -11,11 +11,13 @@ machine.
 - **Boehm garbage collector** (libgc runtime and development headers)
   - Fedora/RHEL: `sudo dnf install gc-devel`
   - Ubuntu/Debian: `sudo apt-get install libgc-dev`
+  - macOS (Homebrew): `brew install bdw-gc`
   - Or build from source (default install prefix: `/usr/local`)
 - **GNU Readline** (development headers)
   - Fedora/RHEL: `sudo dnf install readline-devel`
   - Ubuntu/Debian: `sudo apt-get install libreadline-dev`
-- **pthreads** (standard on Linux)
+  - macOS (Homebrew): `brew install readline`
+- **pthreads** (standard on Linux and macOS)
 
 ## Quick Start
 
@@ -41,7 +43,13 @@ To override the architecture (e.g., 32-bit on a 64-bit machine):
 Environment variables you can set before running `configure`:
 - `CC` — C compiler (default: auto-detected, prefers gcc)
 - `U2_GC_DIR` — Boehm GC installation prefix (auto-detected from
-  `/usr/include/gc/` or `/usr/local/include/gc/`)
+  `/usr/include/gc/`, `/usr/local/include/gc/`, `/opt/homebrew/include/gc/`,
+  or `brew --prefix bdw-gc` on macOS)
+
+On macOS, `configure` auto-detects Homebrew (Apple Silicon and Intel) and
+adds the appropriate `-I`/`-L` flags for `bdw-gc` and the keg-only
+`readline`. No environment variables are needed if both are installed via
+Homebrew.
 
 ## Build Targets
 
@@ -57,11 +65,12 @@ Environment variables you can set before running `configure`:
 
 ## Verify
 
-After building:
+After building (substitute your architecture — e.g., `arm64` on Apple
+Silicon, `x86_64` on Intel/Linux):
 
 ```bash
-Bin.x86_64/youtoo --version
-Bin.x86_64/youtoo --help
+Bin.$(uname -m)/youtoo --version
+Bin.$(uname -m)/youtoo --help
 make test
 ```
 
@@ -76,7 +85,7 @@ Testing module level-1 ... OK.
 ## Running the REPL
 
 ```bash
-Bin.x86_64/youtoo -i
+Bin.$(uname -m)/youtoo -i
 ```
 
 ```
@@ -167,7 +176,7 @@ Key options (from `--help`):
 
 ## Architecture Notes
 
-- **64-bit** (`x86_64`): `WORD_LENGTH=64`, `Instruction` = `uint16_t`, pointers = `long`
+- **64-bit** (`x86_64`, `arm64`): `WORD_LENGTH=64`, `Instruction` = `uint16_t`, pointers = `long`
 - **32-bit** (`i686`): `WORD_LENGTH=32`, `Instruction` = `uint8_t`, pointers = `int`
 - Architecture-specific code generation: `Comptime2/32bit/` and `Comptime2/64bit/`
 - Generated C files: `u2/` subdirectories
