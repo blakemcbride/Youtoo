@@ -57,18 +57,47 @@ EUL_LIB_DIR=$EUL_DIR/Lib.$ARCH
 EUL_BOOT_DIR=${EUL_DIR}.boot
 
 ###-----------------------------------------------------------------------------
+### Detect Homebrew prefix (macOS)
+###-----------------------------------------------------------------------------
+BREW_PREFIX=
+if [ "$OSTYPE" = Darwin ] && command -v brew >/dev/null 2>&1; then
+    BREW_PREFIX=$(brew --prefix 2>/dev/null)
+fi
+
+###-----------------------------------------------------------------------------
 ### Set GC installation directory
 ###-----------------------------------------------------------------------------
 if [ -z "$U2_GC_DIR" ]; then
-    if [ -f /usr/include/gc/gc.h ]; then
-        U2_GC_DIR=/usr
-    elif [ -f /usr/local/include/gc/gc.h ]; then
-        U2_GC_DIR=/usr/local
-    else
-        echo "*** WARNING [configure]: cannot find gc.h"
-        echo "    Set U2_GC_DIR to the Boehm GC installation prefix"
-        echo "    or install gc-devel / libgc-dev"
-        U2_GC_DIR=/usr/local
+    if [ -n "$BREW_PREFIX" ]; then
+        brew_gc=$(brew --prefix bdw-gc 2>/dev/null)
+        if [ -n "$brew_gc" ] && [ -f "$brew_gc/include/gc/gc.h" ]; then
+            U2_GC_DIR=$brew_gc
+        fi
+    fi
+    if [ -z "$U2_GC_DIR" ]; then
+        if [ -f /usr/include/gc/gc.h ]; then
+            U2_GC_DIR=/usr
+        elif [ -f /usr/local/include/gc/gc.h ]; then
+            U2_GC_DIR=/usr/local
+        elif [ -f /opt/homebrew/include/gc/gc.h ]; then
+            U2_GC_DIR=/opt/homebrew
+        else
+            echo "*** WARNING [configure]: cannot find gc.h"
+            echo "    Set U2_GC_DIR to the Boehm GC installation prefix"
+            echo "    or install gc-devel / libgc-dev / brew install bdw-gc"
+            U2_GC_DIR=/usr/local
+        fi
+    fi
+fi
+
+###-----------------------------------------------------------------------------
+### Set readline installation directory (keg-only on Homebrew)
+###-----------------------------------------------------------------------------
+U2_RL_DIR=
+if [ -n "$BREW_PREFIX" ]; then
+    brew_rl=$(brew --prefix readline 2>/dev/null)
+    if [ -n "$brew_rl" ] && [ -f "$brew_rl/include/readline/readline.h" ]; then
+        U2_RL_DIR=$brew_rl
     fi
 fi
 
@@ -133,6 +162,12 @@ esac
 ###-----------------------------------------------------------------------------
 U2_CFLAGS="-std=gnu99 -Wall -Wno-sequence-point -fPIC -O2 -fno-strict-aliasing"
 U2_CFLAGS="$U2_CFLAGS -I${EUL_DIR}/include -I${EUL_DIR}/Vm -I${U2_GC_DIR}/include"
+if [ "$U2_GC_DIR" != /usr ]; then
+    U2_CFLAGS="$U2_CFLAGS -L${U2_GC_DIR}/lib"
+fi
+if [ -n "$U2_RL_DIR" ]; then
+    U2_CFLAGS="$U2_CFLAGS -I${U2_RL_DIR}/include -L${U2_RL_DIR}/lib"
+fi
 U2_CFLAGS="$U2_CFLAGS -DREADLINE -m$WORD_LENGTH"
 U2_LIBS="-lmain -leval -lmath -llevel-0 -llevel-1 -leval -ltelos -lboot -leulvm -lm -lreadline -lpthread"
 
@@ -150,6 +185,7 @@ echo "  Word length:    $WORD_LENGTH"
 echo "  System:         $OSTYPE"
 echo "  Compiler:       $CC"
 echo "  GC dir:         $U2_GC_DIR"
+echo "  Readline dir:   ${U2_RL_DIR:-(system)}"
 echo "  Compiler flags: $U2_CFLAGS"
 echo "  Libraries:      $U2_LIBS"
 
